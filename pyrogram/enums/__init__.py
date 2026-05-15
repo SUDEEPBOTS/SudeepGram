@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .chat_action import ChatAction
+from .button_style import ButtonStyle
 from .chat_event_action import ChatEventAction
 from .chat_member_status import ChatMemberStatus
 from .chat_members_filter import ChatMembersFilter

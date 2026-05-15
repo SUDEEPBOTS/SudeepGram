@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Union, Optional
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, enums
 from pyrogram import types
 from ..object import Object
 
@@ -66,6 +66,11 @@ class InlineKeyboardButton(Object):
             quick way for the user to open your bot in inline mode in the same chat – good for selecting something
             from multiple options.
 
+        style (:obj:`~pyrogram.enums.ButtonStyle`, *optional*):
+            Button color style. Use :obj:`~pyrogram.enums.ButtonStyle.PRIMARY` for blue,
+            :obj:`~pyrogram.enums.ButtonStyle.DANGER` for red,
+            :obj:`~pyrogram.enums.ButtonStyle.SUCCESS` for green.
+        
         callback_game (:obj:`~pyrogram.types.CallbackGame`, *optional*):
             Description of the game that will be launched when the user presses the button.
             **NOTE**: This type of button **must** always be the first button in the first row.
@@ -81,7 +86,8 @@ class InlineKeyboardButton(Object):
         user_id: int = None,
         switch_inline_query: str = None,
         switch_inline_query_current_chat: str = None,
-        callback_game: "types.CallbackGame" = None
+        callback_game: "types.CallbackGame" = None,
+        style: "enums.ButtonStyle" = None
     ):
         super().__init__()
 
@@ -94,6 +100,7 @@ class InlineKeyboardButton(Object):
         self.switch_inline_query = switch_inline_query
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         self.callback_game = callback_game
+        self.style = style
         # self.pay = pay
 
     @staticmethod
@@ -155,6 +162,16 @@ class InlineKeyboardButton(Object):
                 )
             )
 
+    def _get_raw_style(self):
+        if self.style is None:
+            return None
+        from pyrogram import enums
+        return raw.functions.KeyboardButtonStyle(
+            bg_primary=self.style == enums.ButtonStyle.PRIMARY,
+            bg_danger=self.style == enums.ButtonStyle.DANGER,
+            bg_success=self.style == enums.ButtonStyle.SUCCESS,
+        )
+
     async def write(self, client: "pyrogram.Client"):
         if self.callback_data is not None:
             # Telegram only wants bytes, but we are allowed to pass strings too, for convenience.
@@ -162,13 +179,15 @@ class InlineKeyboardButton(Object):
 
             return raw.functions.KeyboardButtonCallback(
                 text=self.text,
-                data=data
+                data=data,
+                style=self._get_raw_style()
             )
 
         if self.url is not None:
             return raw.functions.KeyboardButtonUrl(
                 text=self.text,
-                url=self.url
+                url=self.url,
+                style=self._get_raw_style()
             )
 
         if self.login_url is not None:
