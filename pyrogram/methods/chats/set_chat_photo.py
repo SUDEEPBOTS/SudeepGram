@@ -86,29 +86,29 @@ class SetChatPhoto:
 
         if isinstance(photo, str):
             if os.path.isfile(photo):
-                photo = raw.types.InputChatUploadedPhoto(
+                photo = raw.functions.InputChatUploadedPhoto(
                     file=await self.save_file(photo),
                     video=await self.save_file(video),
                     video_start_ts=video_start_ts,
                 )
             else:
                 photo = utils.get_input_media_from_file_id(photo, FileType.PHOTO)
-                photo = raw.types.InputChatPhoto(id=photo.id)
+                photo = raw.functions.InputChatPhoto(id=photo.id)
         else:
-            photo = raw.types.InputChatUploadedPhoto(
+            photo = raw.functions.InputChatUploadedPhoto(
                 file=await self.save_file(photo),
                 video=await self.save_file(video),
                 video_start_ts=video_start_ts,
             )
 
-        if isinstance(peer, raw.types.InputPeerChat):
+        if isinstance(peer, raw.functions.InputPeerChat):
             await self.invoke(
                 raw.functions.messages.EditChatPhoto(
                     chat_id=peer.chat_id,
                     photo=photo,
                 )
             )
-        elif isinstance(peer, raw.types.InputPeerChannel):
+        elif isinstance(peer, raw.functions.InputPeerChannel):
             await self.invoke(
                 raw.functions.channels.EditPhoto(
                     channel=peer,

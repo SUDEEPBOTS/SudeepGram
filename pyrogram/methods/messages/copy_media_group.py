@@ -103,7 +103,7 @@ class CopyMediaGroup:
 
             media = utils.get_input_media_from_file_id(file_id=file_id)
             multi_media.append(
-                raw.types.InputSingleMedia(
+                raw.functions.InputSingleMedia(
                     media=media,
                     random_id=self.rnd_id(),
                     **await self.parser.parse(
@@ -127,11 +127,11 @@ class CopyMediaGroup:
 
         return await utils.parse_messages(
             self,
-            raw.types.messages.Messages(
+            raw.functions.messages.Messages(
                 messages=[m.message for m in filter(
-                    lambda u: isinstance(u, (raw.types.UpdateNewMessage,
-                                             raw.types.UpdateNewChannelMessage,
-                                             raw.types.UpdateNewScheduledMessage)),
+                    lambda u: isinstance(u, (raw.functions.UpdateNewMessage,
+                                             raw.functions.UpdateNewChannelMessage,
+                                             raw.functions.UpdateNewScheduledMessage)),
                     r.updates
                 )],
                 users=r.users,

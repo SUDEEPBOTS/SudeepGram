@@ -56,7 +56,7 @@ class SendCode:
                         phone_number=phone_number,
                         api_id=self.api_id,
                         api_hash=self.api_hash,
-                        settings=raw.types.CodeSettings()
+                        settings=raw.functions.CodeSettings()
                     )
                 )
             except (PhoneMigrate, NetworkMigrate) as e:

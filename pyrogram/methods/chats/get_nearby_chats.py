@@ -53,7 +53,7 @@ class GetNearbyChats:
 
         r = await self.invoke(
             raw.functions.contacts.GetLocated(
-                geo_point=raw.types.InputGeoPoint(
+                geo_point=raw.functions.InputGeoPoint(
                     lat=latitude,
                     long=longitude
                 )
@@ -67,7 +67,7 @@ class GetNearbyChats:
         peers = r.updates[0].peers
 
         for peer in peers:
-            if isinstance(peer.peer, raw.types.PeerChannel):
+            if isinstance(peer.peer, raw.functions.PeerChannel):
                 chat_id = utils.get_channel_id(peer.peer.channel_id)
 
                 for chat in chats:

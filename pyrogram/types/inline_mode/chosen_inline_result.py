@@ -72,7 +72,7 @@ class ChosenInlineResult(Object, Update):
         self.inline_message_id = inline_message_id
 
     @staticmethod
-    def _parse(client, chosen_inline_result: raw.types.UpdateBotInlineSend, users) -> "ChosenInlineResult":
+    def _parse(client, chosen_inline_result: raw.functions.UpdateBotInlineSend, users) -> "ChosenInlineResult":
         inline_message_id = None
 
         if isinstance(chosen_inline_result.msg_id, raw.types.InputBotInlineMessageID):

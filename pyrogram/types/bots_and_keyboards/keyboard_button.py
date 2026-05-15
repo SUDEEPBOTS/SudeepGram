@@ -61,22 +61,22 @@ class KeyboardButton(Object):
 
     @staticmethod
     def read(b):
-        if isinstance(b, raw.types.KeyboardButton):
+        if isinstance(b, raw.functions.KeyboardButton):
             return b.text
 
-        if isinstance(b, raw.types.KeyboardButtonRequestPhone):
+        if isinstance(b, raw.functions.KeyboardButtonRequestPhone):
             return KeyboardButton(
                 text=b.text,
                 request_contact=True
             )
 
-        if isinstance(b, raw.types.KeyboardButtonRequestGeoLocation):
+        if isinstance(b, raw.functions.KeyboardButtonRequestGeoLocation):
             return KeyboardButton(
                 text=b.text,
                 request_location=True
             )
 
-        if isinstance(b, raw.types.KeyboardButtonSimpleWebView):
+        if isinstance(b, raw.functions.KeyboardButtonSimpleWebView):
             return KeyboardButton(
                 text=b.text,
                 web_app=types.WebAppInfo(
@@ -86,10 +86,10 @@ class KeyboardButton(Object):
 
     def write(self):
         if self.request_contact:
-            return raw.types.KeyboardButtonRequestPhone(text=self.text)
+            return raw.functions.KeyboardButtonRequestPhone(text=self.text)
         elif self.request_location:
-            return raw.types.KeyboardButtonRequestGeoLocation(text=self.text)
+            return raw.functions.KeyboardButtonRequestGeoLocation(text=self.text)
         elif self.web_app:
-            return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
+            return raw.functions.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
         else:
-            return raw.types.KeyboardButton(text=self.text)
+            return raw.functions.KeyboardButton(text=self.text)

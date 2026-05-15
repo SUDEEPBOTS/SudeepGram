@@ -143,29 +143,29 @@ class SendVoice:
             if isinstance(voice, str):
                 if os.path.isfile(voice):
                     file = await self.save_file(voice, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(voice) or "audio/mpeg",
                         file=file,
                         attributes=[
-                            raw.types.DocumentAttributeAudio(
+                            raw.functions.DocumentAttributeAudio(
                                 voice=True,
                                 duration=duration
                             )
                         ]
                     )
                 elif re.match("^https?://", voice):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=voice
                     )
                 else:
                     media = utils.get_input_media_from_file_id(voice, FileType.VOICE)
             else:
                 file = await self.save_file(voice, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(voice.name) or "audio/mpeg",
                     file=file,
                     attributes=[
-                        raw.types.DocumentAttributeAudio(
+                        raw.functions.DocumentAttributeAudio(
                             voice=True,
                             duration=duration
                         )
@@ -191,14 +191,14 @@ class SendVoice:
                     await self.save_file(voice, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except StopTransmission:
             return None

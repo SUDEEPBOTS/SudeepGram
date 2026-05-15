@@ -91,7 +91,7 @@ class CallbackQuery(Object, Update):
         message = None
         inline_message_id = None
 
-        if isinstance(callback_query, raw.types.UpdateBotCallbackQuery):
+        if isinstance(callback_query, raw.functions.UpdateBotCallbackQuery):
             chat_id = utils.get_peer_id(callback_query.peer)
             message_id = callback_query.msg_id
 
@@ -99,7 +99,7 @@ class CallbackQuery(Object, Update):
 
             if not message:
                 message = await client.get_messages(chat_id, message_id)
-        elif isinstance(callback_query, raw.types.UpdateInlineBotCallbackQuery):
+        elif isinstance(callback_query, raw.functions.UpdateInlineBotCallbackQuery):
             inline_message_id = utils.pack_inline_message_id(callback_query.msg_id)
 
         # Try to decode callback query data into string. If that fails, fallback to bytes instead of decoding by

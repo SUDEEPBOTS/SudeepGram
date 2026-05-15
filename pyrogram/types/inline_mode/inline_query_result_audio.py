@@ -88,11 +88,11 @@ class InlineQueryResultAudio(InlineQueryResult):
         self.caption_entities = caption_entities
 
     async def write(self, client: "pyrogram.Client"):
-        audio = raw.types.InputWebDocument(
+        audio = raw.functions.InputWebDocument(
             url=self.audio_url,
             size=0,
             mime_type="audio/mpeg",
-            attributes=[raw.types.DocumentAttributeAudio(
+            attributes=[raw.functions.DocumentAttributeAudio(
                 duration=self.audio_duration,
                 title=self.title,
                 performer=self.performer
@@ -103,7 +103,7 @@ class InlineQueryResultAudio(InlineQueryResult):
             client, self.caption, self.parse_mode, self.caption_entities
         )).values()
 
-        return raw.types.InputBotInlineResult(
+        return raw.functions.InputBotInlineResult(
             id=self.id,
             type=self.type,
             title=self.title,
@@ -111,7 +111,7 @@ class InlineQueryResultAudio(InlineQueryResult):
             send_message=(
                 await self.input_message_content.write(client, self.reply_markup)
                 if self.input_message_content
-                else raw.types.InputBotInlineMessageMediaAuto(
+                else raw.functions.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
                     message=message,
                     entities=entities

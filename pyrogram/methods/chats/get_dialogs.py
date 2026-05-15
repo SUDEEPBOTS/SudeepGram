@@ -52,7 +52,7 @@ class GetDialogs:
 
         offset_date = 0
         offset_id = 0
-        offset_peer = raw.types.InputPeerEmpty()
+        offset_peer = raw.functions.InputPeerEmpty()
 
         while True:
             r = await self.invoke(
@@ -72,7 +72,7 @@ class GetDialogs:
             messages = {}
 
             for message in r.messages:
-                if isinstance(message, raw.types.MessageEmpty):
+                if isinstance(message, raw.functions.MessageEmpty):
                     continue
 
                 chat_id = utils.get_peer_id(message.peer_id)
@@ -81,7 +81,7 @@ class GetDialogs:
             dialogs = []
 
             for dialog in r.dialogs:
-                if not isinstance(dialog, raw.types.Dialog):
+                if not isinstance(dialog, raw.functions.Dialog):
                     continue
 
                 dialogs.append(types.Dialog._parse(self, dialog, messages, users, chats))

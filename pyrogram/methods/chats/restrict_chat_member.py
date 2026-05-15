@@ -79,7 +79,7 @@ class RestrictChatMember:
             raw.functions.channels.EditBanned(
                 channel=await self.resolve_peer(chat_id),
                 participant=await self.resolve_peer(user_id),
-                banned_rights=raw.types.ChatBannedRights(
+                banned_rights=raw.functions.ChatBannedRights(
                     until_date=utils.datetime_to_timestamp(until_date),
                     send_messages=not permissions.can_send_messages,
                     send_media=not permissions.can_send_media_messages,

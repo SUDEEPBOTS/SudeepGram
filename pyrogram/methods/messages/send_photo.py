@@ -151,13 +151,13 @@ class SendPhoto:
             if isinstance(photo, str):
                 if os.path.isfile(photo):
                     file = await self.save_file(photo, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedPhoto(
+                    media = raw.functions.InputMediaUploadedPhoto(
                         file=file,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                     )
                 elif re.match("^https?://", photo):
-                    media = raw.types.InputMediaPhotoExternal(
+                    media = raw.functions.InputMediaPhotoExternal(
                         url=photo,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler
@@ -166,7 +166,7 @@ class SendPhoto:
                     media = utils.get_input_media_from_file_id(photo, FileType.PHOTO, ttl_seconds=ttl_seconds)
             else:
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedPhoto(
+                media = raw.functions.InputMediaUploadedPhoto(
                     file=file,
                     ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler
@@ -191,14 +191,14 @@ class SendPhoto:
                     await self.save_file(photo, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except pyrogram.StopTransmission:
             return None

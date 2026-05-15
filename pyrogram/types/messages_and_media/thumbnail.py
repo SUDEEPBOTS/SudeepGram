@@ -64,14 +64,14 @@ class Thumbnail(Object):
         self.file_size = file_size
 
     @staticmethod
-    def _parse(client, media: Union["raw.types.Photo", "raw.types.Document"]) -> Optional[List["Thumbnail"]]:
-        if isinstance(media, raw.types.Photo):
-            raw_thumbs = [i for i in media.sizes if isinstance(i, raw.types.PhotoSize)]
+    def _parse(client, media: Union["raw.functions.photos.Photo", "raw.functions.Document"]) -> Optional[List["Thumbnail"]]:
+        if isinstance(media, raw.functions.photos.Photo):
+            raw_thumbs = [i for i in media.sizes if isinstance(i, raw.functions.PhotoSize)]
             raw_thumbs.sort(key=lambda p: p.size)
             raw_thumbs = raw_thumbs[:-1]
 
             file_type = FileType.PHOTO
-        elif isinstance(media, raw.types.Document):
+        elif isinstance(media, raw.functions.Document):
             raw_thumbs = media.thumbs
             file_type = FileType.THUMBNAIL
         else:
@@ -80,7 +80,7 @@ class Thumbnail(Object):
         parsed_thumbs = []
 
         for thumb in raw_thumbs:
-            if not isinstance(thumb, raw.types.PhotoSize):
+            if not isinstance(thumb, raw.functions.PhotoSize):
                 continue
 
             parsed_thumbs.append(

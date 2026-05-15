@@ -58,7 +58,7 @@ class SearchMessagesCount:
             ``int``: On success, the messages count is returned.
         """
         r = await self.invoke(
-            raw.functions.messages.Search(
+            raw.functions.contacts.Search(
                 peer=await self.resolve_peer(chat_id),
                 q=query,
                 filter=filter.value(),

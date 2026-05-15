@@ -44,7 +44,7 @@ def get_input_media_from_file_id(
     file_id: str,
     expected_file_type: FileType = None,
     ttl_seconds: int = None
-) -> Union["raw.types.InputMediaPhoto", "raw.types.InputMediaDocument"]:
+) -> Union["raw.functions.InputMediaPhoto", "raw.functions.InputMediaDocument"]:
     try:
         decoded = FileId.decode(file_id)
     except Exception:
@@ -62,8 +62,8 @@ def get_input_media_from_file_id(
         raise ValueError(f"This file id can only be used for download: {file_id}")
 
     if file_type in PHOTO_TYPES:
-        return raw.types.InputMediaPhoto(
-            id=raw.types.InputPhoto(
+        return raw.functions.InputMediaPhoto(
+            id=raw.functions.InputPhoto(
                 id=decoded.media_id,
                 access_hash=decoded.access_hash,
                 file_reference=decoded.file_reference
@@ -72,8 +72,8 @@ def get_input_media_from_file_id(
         )
 
     if file_type in DOCUMENT_TYPES:
-        return raw.types.InputMediaDocument(
-            id=raw.types.InputDocument(
+        return raw.functions.InputMediaDocument(
+            id=raw.functions.InputDocument(
                 id=decoded.media_id,
                 access_hash=decoded.access_hash,
                 file_reference=decoded.file_reference
@@ -86,7 +86,7 @@ def get_input_media_from_file_id(
 
 async def parse_messages(
     client,
-    messages: "raw.types.messages.Messages",
+    messages: "raw.functions.messages.Messages",
     replies: int = 1
 ) -> List["types.Message"]:
     users = {i.id: i for i in messages.users}
@@ -104,7 +104,7 @@ async def parse_messages(
         messages_with_replies = {
             i.id: i.reply_to.reply_to_msg_id
             for i in messages.messages
-            if not isinstance(i, raw.types.MessageEmpty) and i.reply_to
+            if not isinstance(i, raw.functions.MessageEmpty) and i.reply_to
         }
 
         if messages_with_replies:
@@ -207,13 +207,13 @@ MAX_USER_ID = 999999999999
 
 def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
     """Get the raw peer id from a Peer object"""
-    if isinstance(peer, raw.types.PeerUser):
+    if isinstance(peer, raw.functions.PeerUser):
         return peer.user_id
 
-    if isinstance(peer, raw.types.PeerChat):
+    if isinstance(peer, raw.functions.PeerChat):
         return peer.chat_id
 
-    if isinstance(peer, raw.types.PeerChannel):
+    if isinstance(peer, raw.functions.PeerChannel):
         return peer.channel_id
 
     return None
@@ -221,13 +221,13 @@ def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
 
 def get_peer_id(peer: raw.base.Peer) -> int:
     """Get the non-raw peer id from a Peer object"""
-    if isinstance(peer, raw.types.PeerUser):
+    if isinstance(peer, raw.functions.PeerUser):
         return peer.user_id
 
-    if isinstance(peer, raw.types.PeerChat):
+    if isinstance(peer, raw.functions.PeerChat):
         return -peer.chat_id
 
-    if isinstance(peer, raw.types.PeerChannel):
+    if isinstance(peer, raw.functions.PeerChannel):
         return MAX_CHANNEL_ID - peer.channel_id
 
     raise ValueError(f"Peer type invalid: {peer}")
@@ -279,7 +279,7 @@ def compute_password_hash(
 
 # noinspection PyPep8Naming
 def compute_password_check(
-    r: raw.types.account.Password,
+    r: raw.functions.account.Password,
     password: str
 ) -> raw.types.InputCheckPasswordSRP:
     algo = r.current_algo

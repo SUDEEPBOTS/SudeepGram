@@ -66,9 +66,9 @@ class SetAdministratorTitle:
             )
         )).participant
 
-        if isinstance(r, raw.types.ChannelParticipantCreator):
-            admin_rights = raw.types.ChatAdminRights()
-        elif isinstance(r, raw.types.ChannelParticipantAdmin):
+        if isinstance(r, raw.functions.ChannelParticipantCreator):
+            admin_rights = raw.functions.ChatAdminRights()
+        elif isinstance(r, raw.functions.ChannelParticipantAdmin):
             admin_rights = r.admin_rights
         else:
             raise ValueError("Custom titles can only be applied to owners or administrators of supergroups")

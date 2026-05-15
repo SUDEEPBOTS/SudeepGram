@@ -51,13 +51,13 @@ class GetDialogsCount:
                 raw.functions.messages.GetDialogs(
                     offset_date=0,
                     offset_id=0,
-                    offset_peer=raw.types.InputPeerEmpty(),
+                    offset_peer=raw.functions.InputPeerEmpty(),
                     limit=1,
                     hash=0
                 )
             )
 
-            if isinstance(r, raw.types.messages.Dialogs):
+            if isinstance(r, raw.functions.messages.Dialogs):
                 return len(r.dialogs)
             else:
                 return r.count

@@ -62,13 +62,13 @@ class Reaction(Object):
         client: "pyrogram.Client",
         reaction: "raw.base.Reaction"
     ) -> "Reaction":
-        if isinstance(reaction, raw.types.ReactionEmoji):
+        if isinstance(reaction, raw.functions.ReactionEmoji):
             return Reaction(
                 client=client,
                 emoji=reaction.emoticon
             )
 
-        if isinstance(reaction, raw.types.ReactionCustomEmoji):
+        if isinstance(reaction, raw.functions.ReactionCustomEmoji):
             return Reaction(
                 client=client,
                 custom_emoji_id=reaction.document_id

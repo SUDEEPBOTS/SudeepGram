@@ -43,7 +43,7 @@ class InputPhoneContact(Object):
                 phone: str,
                 first_name: str,
                 last_name: str = ""):
-        return raw.types.InputPhoneContact(
+        return raw.functions.InputPhoneContact(
             client_id=MsgId(),
             phone="+" + phone.strip("+"),
             first_name=first_name,

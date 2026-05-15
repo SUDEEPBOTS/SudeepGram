@@ -124,26 +124,26 @@ class SendSticker:
             if isinstance(sticker, str):
                 if os.path.isfile(sticker):
                     file = await self.save_file(sticker, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(sticker) or "image/webp",
                         file=file,
                         attributes=[
-                            raw.types.DocumentAttributeFilename(file_name=os.path.basename(sticker))
+                            raw.functions.DocumentAttributeFilename(file_name=os.path.basename(sticker))
                         ]
                     )
                 elif re.match("^https?://", sticker):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=sticker
                     )
                 else:
                     media = utils.get_input_media_from_file_id(sticker, FileType.STICKER)
             else:
                 file = await self.save_file(sticker, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(sticker.name) or "image/webp",
                     file=file,
                     attributes=[
-                        raw.types.DocumentAttributeFilename(file_name=sticker.name)
+                        raw.functions.DocumentAttributeFilename(file_name=sticker.name)
                     ]
                 )
 
@@ -166,14 +166,14 @@ class SendSticker:
                     await self.save_file(sticker, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except StopTransmission:
             return None

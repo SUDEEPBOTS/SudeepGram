@@ -102,12 +102,12 @@ class InlineQueryResultPhoto(InlineQueryResult):
         self.input_message_content = input_message_content
 
     async def write(self, client: "pyrogram.Client"):
-        photo = raw.types.InputWebDocument(
+        photo = raw.functions.InputWebDocument(
             url=self.photo_url,
             size=0,
             mime_type="image/jpeg",
             attributes=[
-                raw.types.DocumentAttributeImageSize(
+                raw.functions.DocumentAttributeImageSize(
                     w=self.photo_width,
                     h=self.photo_height
                 )
@@ -117,7 +117,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if self.thumb_url is None:
             thumb = photo
         else:
-            thumb = raw.types.InputWebDocument(
+            thumb = raw.functions.InputWebDocument(
                 url=self.thumb_url,
                 size=0,
                 mime_type="image/jpeg",
@@ -128,7 +128,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
             client, self.caption, self.parse_mode, self.caption_entities
         )).values()
 
-        return raw.types.InputBotInlineResult(
+        return raw.functions.InputBotInlineResult(
             id=self.id,
             type=self.type,
             title=self.title,
@@ -138,7 +138,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
             send_message=(
                 await self.input_message_content.write(client, self.reply_markup)
                 if self.input_message_content
-                else raw.types.InputBotInlineMessageMediaAuto(
+                else raw.functions.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
                     message=message,
                     entities=entities

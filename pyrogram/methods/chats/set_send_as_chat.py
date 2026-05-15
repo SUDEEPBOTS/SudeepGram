@@ -50,7 +50,7 @@ class SetSendAsChat:
                 await app.set_send_as_chat(chat_id, send_as_chat_id)
         """
         return await self.invoke(
-            raw.functions.messages.SaveDefaultSendAs(
+            raw.functions.phone.SaveDefaultSendAs(
                 peer=await self.resolve_peer(chat_id),
                 send_as=await self.resolve_peer(send_as_chat_id)
             )

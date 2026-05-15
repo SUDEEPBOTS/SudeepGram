@@ -68,8 +68,8 @@ class Game(Object):
         self.animation = animation
 
     @staticmethod
-    def _parse(client, message: "raw.types.Message") -> "Game":
-        game: "raw.types.Game" = message.media.game
+    def _parse(client, message: "raw.functions.Message") -> "Game":
+        game: "raw.functions.Game" = message.media.game
         animation = None
 
         if game.document:
@@ -77,14 +77,14 @@ class Game(Object):
 
             file_name = getattr(
                 attributes.get(
-                    raw.types.DocumentAttributeFilename, None
+                    raw.functions.DocumentAttributeFilename, None
                 ), "file_name", None
             )
 
             animation = types.Animation._parse(
                 client,
                 game.document,
-                attributes.get(raw.types.DocumentAttributeVideo, None),
+                attributes.get(raw.functions.DocumentAttributeVideo, None),
                 file_name
             )
 

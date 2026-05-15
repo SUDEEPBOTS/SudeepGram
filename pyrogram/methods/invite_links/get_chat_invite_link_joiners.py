@@ -57,7 +57,7 @@ class GetChatInviteLinkJoiners:
         limit = min(100, total)
 
         offset_date = 0
-        offset_user = raw.types.InputUserEmpty()
+        offset_user = raw.functions.InputUserEmpty()
 
         while True:
             r = await self.invoke(

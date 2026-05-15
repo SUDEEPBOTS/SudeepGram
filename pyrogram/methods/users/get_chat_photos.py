@@ -53,7 +53,7 @@ class GetChatPhotos:
         """
         peer_id = await self.resolve_peer(chat_id)
 
-        if isinstance(peer_id, raw.types.InputPeerChannel):
+        if isinstance(peer_id, raw.functions.InputPeerChannel):
             r = await self.invoke(
                 raw.functions.channels.GetFullChannel(
                     channel=peer_id
@@ -65,10 +65,10 @@ class GetChatPhotos:
             r = await utils.parse_messages(
                 self,
                 await self.invoke(
-                    raw.functions.messages.Search(
+                    raw.functions.contacts.Search(
                         peer=peer_id,
                         q="",
-                        filter=raw.types.InputMessagesFilterChatPhotos(),
+                        filter=raw.functions.InputMessagesFilterChatPhotos(),
                         min_date=0,
                         max_date=0,
                         offset_id=0,

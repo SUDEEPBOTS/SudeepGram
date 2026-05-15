@@ -28,7 +28,7 @@ from pyrogram.handlers import (
     UserStatusHandler, RawUpdateHandler, InlineQueryHandler, PollHandler,
     ChosenInlineResultHandler, ChatMemberUpdatedHandler, ChatJoinRequestHandler
 )
-from pyrogram.raw.types import (
+from pyrogram.raw.functions import (
     UpdateNewMessage, UpdateNewChannelMessage, UpdateNewScheduledMessage,
     UpdateEditMessage, UpdateEditChannelMessage,
     UpdateDeleteMessages, UpdateDeleteChannelMessages,

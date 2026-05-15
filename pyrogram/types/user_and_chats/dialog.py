@@ -67,7 +67,7 @@ class Dialog(Object):
         self.is_pinned = is_pinned
 
     @staticmethod
-    def _parse(client, dialog: "raw.types.Dialog", messages, users, chats) -> "Dialog":
+    def _parse(client, dialog: "raw.functions.Dialog", messages, users, chats) -> "Dialog":
         return Dialog(
             chat=types.Chat._parse_dialog(client, dialog.peer, users, chats),
             top_message=messages.get(utils.get_peer_id(dialog.peer)),

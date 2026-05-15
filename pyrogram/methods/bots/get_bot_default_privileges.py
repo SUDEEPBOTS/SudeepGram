@@ -48,7 +48,7 @@ class GetBotDefaultPrivileges:
 
         bot_info = await self.invoke(
             raw.functions.users.GetFullUser(
-                id=raw.types.InputUserSelf()
+                id=raw.functions.InputUserSelf()
             )
         )
 

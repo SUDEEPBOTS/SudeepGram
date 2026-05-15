@@ -76,9 +76,9 @@ class SendGame:
         r = await self.invoke(
             raw.functions.messages.SendMedia(
                 peer=await self.resolve_peer(chat_id),
-                media=raw.types.InputMediaGame(
-                    id=raw.types.InputGameShortName(
-                        bot_id=raw.types.InputUserSelf(),
+                media=raw.functions.InputMediaGame(
+                    id=raw.functions.InputGameShortName(
+                        bot_id=raw.functions.InputUserSelf(),
                         short_name=game_short_name
                     ),
                 ),
@@ -92,7 +92,7 @@ class SendGame:
         )
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateNewChannelMessage)):
+            if isinstance(i, (raw.functions.UpdateNewMessage, raw.functions.UpdateNewChannelMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},

@@ -72,9 +72,9 @@ class ChatMemberUpdated(Object, Update):
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
-        update: Union["raw.types.UpdateChatParticipant", "raw.types.UpdateChannelParticipant"],
-        users: Dict[int, "raw.types.User"],
-        chats: Dict[int, "raw.types.Chat"]
+        update: Union["raw.functions.UpdateChatParticipant", "raw.functions.UpdateChannelParticipant"],
+        users: Dict[int, "raw.functions.User"],
+        chats: Dict[int, "raw.functions.Chat"]
     ) -> "ChatMemberUpdated":
         chat_id = getattr(update, "chat_id", None) or getattr(update, "channel_id")
 

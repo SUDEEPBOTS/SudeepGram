@@ -85,8 +85,8 @@ class SendLocation:
         r = await self.invoke(
             raw.functions.messages.SendMedia(
                 peer=await self.resolve_peer(chat_id),
-                media=raw.types.InputMediaGeoPoint(
-                    geo_point=raw.types.InputGeoPoint(
+                media=raw.functions.InputMediaGeoPoint(
+                    geo_point=raw.functions.InputGeoPoint(
                         lat=latitude,
                         long=longitude
                     )
@@ -102,12 +102,12 @@ class SendLocation:
         )
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateNewMessage,
-                              raw.types.UpdateNewChannelMessage,
-                              raw.types.UpdateNewScheduledMessage)):
+            if isinstance(i, (raw.functions.UpdateNewMessage,
+                              raw.functions.UpdateNewChannelMessage,
+                              raw.functions.UpdateNewScheduledMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                 )

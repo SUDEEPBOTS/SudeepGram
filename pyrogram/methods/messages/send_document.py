@@ -161,17 +161,17 @@ class SendDocument:
                 if os.path.isfile(document):
                     thumb = await self.save_file(thumb)
                     file = await self.save_file(document, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(document) or "application/zip",
                         file=file,
                         force_file=force_document or None,
                         thumb=thumb,
                         attributes=[
-                            raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(document))
+                            raw.functions.DocumentAttributeFilename(file_name=file_name or os.path.basename(document))
                         ]
                     )
                 elif re.match("^https?://", document):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=document
                     )
                 else:
@@ -179,12 +179,12 @@ class SendDocument:
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(document, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or document.name) or "application/zip",
                     file=file,
                     thumb=thumb,
                     attributes=[
-                        raw.types.DocumentAttributeFilename(file_name=file_name or document.name)
+                        raw.functions.DocumentAttributeFilename(file_name=file_name or document.name)
                     ]
                 )
 
@@ -207,14 +207,14 @@ class SendDocument:
                     await self.save_file(document, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except StopTransmission:
             return None

@@ -40,7 +40,7 @@ class GetMe:
         """
         r = await self.invoke(
             raw.functions.users.GetFullUser(
-                id=raw.types.InputUserSelf()
+                id=raw.functions.InputUserSelf()
             )
         )
 

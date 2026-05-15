@@ -96,15 +96,15 @@ class EditMessageMedia:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedPhoto(
+                        media=raw.functions.InputMediaUploadedPhoto(
                             file=await self.save_file(media.media),
                             spoiler=media.has_spoiler
                         )
                     )
                 )
 
-                media = raw.types.InputMediaPhoto(
-                    id=raw.types.InputPhoto(
+                media = raw.functions.InputMediaPhoto(
+                    id=raw.functions.InputPhoto(
                         id=uploaded_media.photo.id,
                         access_hash=uploaded_media.photo.access_hash,
                         file_reference=uploaded_media.photo.file_reference
@@ -112,7 +112,7 @@ class EditMessageMedia:
                     spoiler=media.has_spoiler
                 )
             elif re.match("^https?://", media.media):
-                media = raw.types.InputMediaPhotoExternal(
+                media = raw.functions.InputMediaPhotoExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
                 )
@@ -123,19 +123,19 @@ class EditMessageMedia:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
+                        media=raw.functions.InputMediaUploadedDocument(
                             mime_type=self.guess_mime_type(media.media) or "video/mp4",
                             thumb=await self.save_file(media.thumb),
                             spoiler=media.has_spoiler,
                             file=await self.save_file(media.media),
                             attributes=[
-                                raw.types.DocumentAttributeVideo(
+                                raw.functions.DocumentAttributeVideo(
                                     supports_streaming=media.supports_streaming or None,
                                     duration=media.duration,
                                     w=media.width,
                                     h=media.height
                                 ),
-                                raw.types.DocumentAttributeFilename(
+                                raw.functions.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 )
                             ]
@@ -143,8 +143,8 @@ class EditMessageMedia:
                     )
                 )
 
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
+                media = raw.functions.InputMediaDocument(
+                    id=raw.functions.InputDocument(
                         id=uploaded_media.document.id,
                         access_hash=uploaded_media.document.access_hash,
                         file_reference=uploaded_media.document.file_reference
@@ -152,7 +152,7 @@ class EditMessageMedia:
                     spoiler=media.has_spoiler
                 )
             elif re.match("^https?://", media.media):
-                media = raw.types.InputMediaDocumentExternal(
+                media = raw.functions.InputMediaDocumentExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
                 )
@@ -163,17 +163,17 @@ class EditMessageMedia:
                 media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
+                        media=raw.functions.InputMediaUploadedDocument(
                             mime_type=self.guess_mime_type(media.media) or "audio/mpeg",
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=[
-                                raw.types.DocumentAttributeAudio(
+                                raw.functions.DocumentAttributeAudio(
                                     duration=media.duration,
                                     performer=media.performer,
                                     title=media.title
                                 ),
-                                raw.types.DocumentAttributeFilename(
+                                raw.functions.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 )
                             ]
@@ -181,15 +181,15 @@ class EditMessageMedia:
                     )
                 )
 
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
+                media = raw.functions.InputMediaDocument(
+                    id=raw.functions.InputDocument(
                         id=media.document.id,
                         access_hash=media.document.access_hash,
                         file_reference=media.document.file_reference
                     )
                 )
             elif re.match("^https?://", media.media):
-                media = raw.types.InputMediaDocumentExternal(
+                media = raw.functions.InputMediaDocumentExternal(
                     url=media.media
                 )
             else:
@@ -199,29 +199,29 @@ class EditMessageMedia:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
+                        media=raw.functions.InputMediaUploadedDocument(
                             mime_type=self.guess_mime_type(media.media) or "video/mp4",
                             thumb=await self.save_file(media.thumb),
                             spoiler=media.has_spoiler,
                             file=await self.save_file(media.media),
                             attributes=[
-                                raw.types.DocumentAttributeVideo(
+                                raw.functions.DocumentAttributeVideo(
                                     supports_streaming=True,
                                     duration=media.duration,
                                     w=media.width,
                                     h=media.height
                                 ),
-                                raw.types.DocumentAttributeFilename(
+                                raw.functions.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 ),
-                                raw.types.DocumentAttributeAnimated()
+                                raw.functions.DocumentAttributeAnimated()
                             ]
                         )
                     )
                 )
 
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
+                media = raw.functions.InputMediaDocument(
+                    id=raw.functions.InputDocument(
                         id=uploaded_media.document.id,
                         access_hash=uploaded_media.document.access_hash,
                         file_reference=uploaded_media.document.file_reference
@@ -229,7 +229,7 @@ class EditMessageMedia:
                     spoiler=media.has_spoiler
                 )
             elif re.match("^https?://", media.media):
-                media = raw.types.InputMediaDocumentExternal(
+                media = raw.functions.InputMediaDocumentExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
                 )
@@ -240,12 +240,12 @@ class EditMessageMedia:
                 media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
+                        media=raw.functions.InputMediaUploadedDocument(
                             mime_type=self.guess_mime_type(media.media) or "application/zip",
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=[
-                                raw.types.DocumentAttributeFilename(
+                                raw.functions.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 )
                             ]
@@ -253,15 +253,15 @@ class EditMessageMedia:
                     )
                 )
 
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
+                media = raw.functions.InputMediaDocument(
+                    id=raw.functions.InputDocument(
                         id=media.document.id,
                         access_hash=media.document.access_hash,
                         file_reference=media.document.file_reference
                     )
                 )
             elif re.match("^https?://", media.media):
-                media = raw.types.InputMediaDocumentExternal(
+                media = raw.functions.InputMediaDocumentExternal(
                     url=media.media
                 )
             else:
@@ -279,7 +279,7 @@ class EditMessageMedia:
         )
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateEditMessage, raw.types.UpdateEditChannelMessage)):
+            if isinstance(i, (raw.functions.UpdateEditMessage, raw.functions.UpdateEditChannelMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},

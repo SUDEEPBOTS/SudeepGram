@@ -74,7 +74,7 @@ class Voice(Object):
         self.date = date
 
     @staticmethod
-    def _parse(client, voice: "raw.types.Document", attributes: "raw.types.DocumentAttributeAudio") -> "Voice":
+    def _parse(client, voice: "raw.functions.Document", attributes: "raw.functions.DocumentAttributeAudio") -> "Voice":
         return Voice(
             file_id=FileId(
                 file_type=FileType.VOICE,

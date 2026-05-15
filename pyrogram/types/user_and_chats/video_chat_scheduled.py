@@ -39,5 +39,5 @@ class VideoChatScheduled(Object):
         self.start_date = start_date
 
     @staticmethod
-    def _parse(action: "raw.types.MessageActionGroupCallScheduled") -> "VideoChatScheduled":
+    def _parse(action: "raw.functions.MessageActionGroupCallScheduled") -> "VideoChatScheduled":
         return VideoChatScheduled(start_date=utils.timestamp_to_datetime(action.schedule_date))

@@ -75,10 +75,10 @@ class GetInlineBotResults:
             return await self.invoke(
                 raw.functions.messages.GetInlineBotResults(
                     bot=await self.resolve_peer(bot),
-                    peer=raw.types.InputPeerSelf(),
+                    peer=raw.functions.InputPeerSelf(),
                     query=query,
                     offset=offset,
-                    geo_point=raw.types.InputGeoPoint(
+                    geo_point=raw.functions.InputGeoPoint(
                         lat=latitude,
                         long=longitude
                     ) if (latitude is not None and longitude is not None) else None

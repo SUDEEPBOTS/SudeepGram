@@ -52,14 +52,14 @@ class ChatReactions(Object):
 
     @staticmethod
     def _parse(client, chat_reactions: "raw.base.ChatReactions") -> Optional["ChatReactions"]:
-        if isinstance(chat_reactions, raw.types.ChatReactionsAll):
+        if isinstance(chat_reactions, raw.functions.ChatReactionsAll):
             return ChatReactions(
                 client=client,
                 all_are_enabled=True,
                 allow_custom_emoji=chat_reactions.allow_custom
             )
 
-        if isinstance(chat_reactions, raw.types.ChatReactionsSome):
+        if isinstance(chat_reactions, raw.functions.ChatReactionsSome):
             return ChatReactions(
                 client=client,
                 reactions=[types.Reaction._parse(client, reaction)

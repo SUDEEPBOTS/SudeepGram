@@ -110,18 +110,18 @@ class InlineQueryResultVideo(InlineQueryResult):
         self.mime_type = mime_type
 
     async def write(self, client: "pyrogram.Client"):
-        video = raw.types.InputWebDocument(
+        video = raw.functions.InputWebDocument(
             url=self.video_url,
             size=0,
             mime_type=self.mime_type,
-            attributes=[raw.types.DocumentAttributeVideo(
+            attributes=[raw.functions.DocumentAttributeVideo(
                 duration=self.video_duration,
                 w=self.video_width,
                 h=self.video_height
             )]
         )
 
-        thumb = raw.types.InputWebDocument(
+        thumb = raw.functions.InputWebDocument(
             url=self.thumb_url,
             size=0,
             mime_type="image/jpeg",
@@ -132,7 +132,7 @@ class InlineQueryResultVideo(InlineQueryResult):
             client, self.caption, self.parse_mode, self.caption_entities
         )).values()
 
-        return raw.types.InputBotInlineResult(
+        return raw.functions.InputBotInlineResult(
             id=self.id,
             type=self.type,
             title=self.title,
@@ -142,7 +142,7 @@ class InlineQueryResultVideo(InlineQueryResult):
             send_message=(
                 await self.input_message_content.write(client, self.reply_markup)
                 if self.input_message_content
-                else raw.types.InputBotInlineMessageMediaAuto(
+                else raw.functions.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
                     message=message,
                     entities=entities

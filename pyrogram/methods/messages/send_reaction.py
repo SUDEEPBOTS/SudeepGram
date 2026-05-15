@@ -65,7 +65,7 @@ class SendReaction:
             raw.functions.messages.SendReaction(
                 peer=await self.resolve_peer(chat_id),
                 msg_id=message_id,
-                reaction=[raw.types.ReactionEmoji(emoticon=emoji)] if emoji else None,
+                reaction=[raw.functions.ReactionEmoji(emoticon=emoji)] if emoji else None,
                 big=big
             )
         )

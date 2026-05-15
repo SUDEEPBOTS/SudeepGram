@@ -62,8 +62,8 @@ class StopPoll:
             raw.functions.messages.EditMessage(
                 peer=await self.resolve_peer(chat_id),
                 id=message_id,
-                media=raw.types.InputMediaPoll(
-                    poll=raw.types.Poll(
+                media=raw.functions.InputMediaPoll(
+                    poll=raw.functions.Poll(
                         id=int(poll.id),
                         closed=True,
                         question="",

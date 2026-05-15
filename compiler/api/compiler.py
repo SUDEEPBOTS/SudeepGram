@@ -247,6 +247,9 @@ def start(format: bool = False):
 
             namespace, name = qualname.split(".") if "." in qualname else ("", qualname)
             name = camel(name)
+            # Fix name being a Python reserved keyword
+            if name in ("True", "False", "None", "And", "Or", "Not", "Is", "In", "Del", "For", "Try", "With", "From", "Pass", "Class", "While", "Global", "Lambda", "Return", "Import", "Except", "Raise"):
+                name = name + "Type"
             qualname = ".".join([namespace, name]).lstrip(".")
 
             typespace, type = qualtype.split(".") if "." in qualtype else ("", qualtype)
@@ -260,7 +263,7 @@ def start(format: bool = False):
 
             # Fix arg name being "self" (reserved python keyword)
             for i, item in enumerate(args):
-                if item[0] == "self":
+                if item[0] in ("self", "from", "import", "class", "return", "pass"):
                     args[i] = ("is_self", item[1])
 
             combinator = Combinator(

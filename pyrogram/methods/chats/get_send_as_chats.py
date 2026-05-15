@@ -57,7 +57,7 @@ class GetSendAsChats:
         send_as_chats = types.List()
 
         for p in r.peers:
-            if isinstance(p, raw.types.PeerUser):
+            if isinstance(p, raw.functions.PeerUser):
                 send_as_chats.append(types.Chat._parse_chat(self, users[p.user_id]))
             else:
                 send_as_chats.append(types.Chat._parse_chat(self, chats[p.channel_id]))

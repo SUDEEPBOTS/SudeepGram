@@ -110,12 +110,12 @@ class InlineQueryResultAnimation(InlineQueryResult):
         self.input_message_content = input_message_content
 
     async def write(self, client: "pyrogram.Client"):
-        animation = raw.types.InputWebDocument(
+        animation = raw.functions.InputWebDocument(
             url=self.animation_url,
             size=0,
             mime_type="image/gif",
             attributes=[
-                raw.types.DocumentAttributeVideo(
+                raw.functions.DocumentAttributeVideo(
                     w=self.animation_width,
                     h=self.animation_height,
                     duration=self.animation_duration
@@ -126,7 +126,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         if self.thumb_url is None:
             thumb = animation
         else:
-            thumb = raw.types.InputWebDocument(
+            thumb = raw.functions.InputWebDocument(
                 url=self.thumb_url,
                 size=0,
                 mime_type=self.thumb_mime_type,
@@ -137,7 +137,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
             client, self.caption, self.parse_mode, self.caption_entities
         )).values()
 
-        return raw.types.InputBotInlineResult(
+        return raw.functions.InputBotInlineResult(
             id=self.id,
             type=self.type,
             title=self.title,
@@ -146,7 +146,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
             send_message=(
                 self.input_message_content.write(client, self.reply_markup)
                 if self.input_message_content
-                else raw.types.InputBotInlineMessageMediaAuto(
+                else raw.functions.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
                     message=message,
                     entities=entities

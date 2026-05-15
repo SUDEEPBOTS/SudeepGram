@@ -98,7 +98,7 @@ class InlineKeyboardButton(Object):
 
     @staticmethod
     def read(b: "raw.base.KeyboardButton"):
-        if isinstance(b, raw.types.KeyboardButtonCallback):
+        if isinstance(b, raw.functions.KeyboardButtonCallback):
             # Try decode data to keep it as string, but if fails, fallback to bytes so we don't lose any information,
             # instead of decoding by ignoring/replacing errors.
             try:
@@ -111,25 +111,25 @@ class InlineKeyboardButton(Object):
                 callback_data=data
             )
 
-        if isinstance(b, raw.types.KeyboardButtonUrl):
+        if isinstance(b, raw.functions.KeyboardButtonUrl):
             return InlineKeyboardButton(
                 text=b.text,
                 url=b.url
             )
 
-        if isinstance(b, raw.types.KeyboardButtonUrlAuth):
+        if isinstance(b, raw.functions.KeyboardButtonUrlAuth):
             return InlineKeyboardButton(
                 text=b.text,
                 login_url=types.LoginUrl.read(b)
             )
 
-        if isinstance(b, raw.types.KeyboardButtonUserProfile):
+        if isinstance(b, raw.functions.KeyboardButtonUserProfile):
             return InlineKeyboardButton(
                 text=b.text,
                 user_id=b.user_id
             )
 
-        if isinstance(b, raw.types.KeyboardButtonSwitchInline):
+        if isinstance(b, raw.functions.KeyboardButtonSwitchInline):
             if b.same_peer:
                 return InlineKeyboardButton(
                     text=b.text,
@@ -141,13 +141,13 @@ class InlineKeyboardButton(Object):
                     switch_inline_query=b.query
                 )
 
-        if isinstance(b, raw.types.KeyboardButtonGame):
+        if isinstance(b, raw.functions.KeyboardButtonGame):
             return InlineKeyboardButton(
                 text=b.text,
                 callback_game=types.CallbackGame()
             )
 
-        if isinstance(b, raw.types.KeyboardButtonWebView):
+        if isinstance(b, raw.functions.KeyboardButtonWebView):
             return InlineKeyboardButton(
                 text=b.text,
                 web_app=types.WebAppInfo(
@@ -160,13 +160,13 @@ class InlineKeyboardButton(Object):
             # Telegram only wants bytes, but we are allowed to pass strings too, for convenience.
             data = bytes(self.callback_data, "utf-8") if isinstance(self.callback_data, str) else self.callback_data
 
-            return raw.types.KeyboardButtonCallback(
+            return raw.functions.KeyboardButtonCallback(
                 text=self.text,
                 data=data
             )
 
         if self.url is not None:
-            return raw.types.KeyboardButtonUrl(
+            return raw.functions.KeyboardButtonUrl(
                 text=self.text,
                 url=self.url
             )
@@ -178,31 +178,31 @@ class InlineKeyboardButton(Object):
             )
 
         if self.user_id is not None:
-            return raw.types.InputKeyboardButtonUserProfile(
+            return raw.functions.InputKeyboardButtonUserProfile(
                 text=self.text,
                 user_id=await client.resolve_peer(self.user_id)
             )
 
         if self.switch_inline_query is not None:
-            return raw.types.KeyboardButtonSwitchInline(
+            return raw.functions.KeyboardButtonSwitchInline(
                 text=self.text,
                 query=self.switch_inline_query
             )
 
         if self.switch_inline_query_current_chat is not None:
-            return raw.types.KeyboardButtonSwitchInline(
+            return raw.functions.KeyboardButtonSwitchInline(
                 text=self.text,
                 query=self.switch_inline_query_current_chat,
                 same_peer=True
             )
 
         if self.callback_game is not None:
-            return raw.types.KeyboardButtonGame(
+            return raw.functions.KeyboardButtonGame(
                 text=self.text
             )
 
         if self.web_app is not None:
-            return raw.types.KeyboardButtonWebView(
+            return raw.functions.KeyboardButtonWebView(
                 text=self.text,
                 url=self.web_app.url
             )

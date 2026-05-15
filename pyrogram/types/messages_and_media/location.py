@@ -46,8 +46,8 @@ class Location(Object):
         self.latitude = latitude
 
     @staticmethod
-    def _parse(client, geo_point: "raw.types.GeoPoint") -> "Location":
-        if isinstance(geo_point, raw.types.GeoPoint):
+    def _parse(client, geo_point: "raw.functions.GeoPoint") -> "Location":
+        if isinstance(geo_point, raw.functions.GeoPoint):
             return Location(
                 longitude=geo_point.long,
                 latitude=geo_point.lat,

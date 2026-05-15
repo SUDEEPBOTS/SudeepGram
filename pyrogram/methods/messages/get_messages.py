@@ -91,7 +91,7 @@ class GetMessages:
         """
         ids, ids_type = (
             (message_ids, raw.types.InputMessageID) if message_ids
-            else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
+            else (reply_to_message_ids, raw.functions.InputMessageReplyTo) if reply_to_message_ids
             else (None, None)
         )
 
@@ -107,10 +107,10 @@ class GetMessages:
         if replies < 0:
             replies = (1 << 31) - 1
 
-        if isinstance(peer, raw.types.InputPeerChannel):
+        if isinstance(peer, raw.functions.InputPeerChannel):
             rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
         else:
-            rpc = raw.functions.messages.GetMessages(id=ids)
+            rpc = raw.functions.channels.GetMessages(id=ids)
 
         r = await self.invoke(rpc, sleep_threshold=-1)
 

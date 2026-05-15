@@ -484,7 +484,7 @@ class Client(Methods):
 
         self.parse_mode = parse_mode
 
-    async def fetch_peers(self, peers: List[Union[raw.types.User, raw.types.Chat, raw.types.Channel]]) -> bool:
+    async def fetch_peers(self, peers: List[Union[raw.functions.User, raw.functions.Chat, raw.functions.Channel]]) -> bool:
         is_min = False
         parsed_peers = []
 
@@ -496,7 +496,7 @@ class Client(Methods):
             username = None
             phone_number = None
 
-            if isinstance(peer, raw.types.User):
+            if isinstance(peer, raw.functions.User):
                 peer_id = peer.id
                 access_hash = peer.access_hash
                 username = (
@@ -506,11 +506,11 @@ class Client(Methods):
                 )
                 phone_number = peer.phone
                 peer_type = "bot" if peer.bot else "user"
-            elif isinstance(peer, (raw.types.Chat, raw.types.ChatForbidden)):
+            elif isinstance(peer, (raw.functions.Chat, raw.functions.ChatForbidden)):
                 peer_id = -peer.id
                 access_hash = 0
                 peer_type = "group"
-            elif isinstance(peer, raw.types.Channel):
+            elif isinstance(peer, raw.functions.Channel):
                 peer_id = utils.get_channel_id(peer.id)
                 access_hash = peer.access_hash
                 username = (
@@ -519,7 +519,7 @@ class Client(Methods):
                     else None
                 )
                 peer_type = "channel" if peer.broadcast else "supergroup"
-            elif isinstance(peer, raw.types.ChannelForbidden):
+            elif isinstance(peer, raw.functions.ChannelForbidden):
                 peer_id = utils.get_channel_id(peer.id)
                 access_hash = peer.access_hash
                 peer_type = "channel" if peer.broadcast else "supergroup"
@@ -535,7 +535,7 @@ class Client(Methods):
     async def handle_updates(self, updates):
         self.last_update_time = datetime.now()
 
-        if isinstance(updates, (raw.types.Updates, raw.types.UpdatesCombined)):
+        if isinstance(updates, (raw.types.Updates, raw.functions.UpdatesCombined)):
             is_min = any((
                 await self.fetch_peers(updates.users),
                 await self.fetch_peers(updates.chats),
@@ -556,19 +556,19 @@ class Client(Methods):
                 pts = getattr(update, "pts", None)
                 pts_count = getattr(update, "pts_count", None)
 
-                if isinstance(update, raw.types.UpdateChannelTooLong):
+                if isinstance(update, raw.functions.UpdateChannelTooLong):
                     log.info(update)
 
-                if isinstance(update, raw.types.UpdateNewChannelMessage) and is_min:
+                if isinstance(update, raw.functions.UpdateNewChannelMessage) and is_min:
                     message = update.message
 
-                    if not isinstance(message, raw.types.MessageEmpty):
+                    if not isinstance(message, raw.functions.MessageEmpty):
                         try:
                             diff = await self.invoke(
                                 raw.functions.updates.GetChannelDifference(
                                     channel=await self.resolve_peer(utils.get_channel_id(channel_id)),
-                                    filter=raw.types.ChannelMessagesFilter(
-                                        ranges=[raw.types.MessageRange(
+                                    filter=raw.functions.ChannelMessagesFilter(
+                                        ranges=[raw.functions.MessageRange(
                                             min_id=update.message.id,
                                             max_id=update.message.id
                                         )]
@@ -580,12 +580,12 @@ class Client(Methods):
                         except ChannelPrivate:
                             pass
                         else:
-                            if not isinstance(diff, raw.types.updates.ChannelDifferenceEmpty):
+                            if not isinstance(diff, raw.functions.updates.ChannelDifferenceEmpty):
                                 users.update({u.id: u for u in diff.users})
                                 chats.update({c.id: c for c in diff.chats})
 
                 self.dispatcher.updates_queue.put_nowait((update, users, chats))
-        elif isinstance(updates, (raw.types.UpdateShortMessage, raw.types.UpdateShortChatMessage)):
+        elif isinstance(updates, (raw.functions.UpdateShortMessage, raw.functions.UpdateShortChatMessage)):
             diff = await self.invoke(
                 raw.functions.updates.GetDifference(
                     pts=updates.pts - updates.pts_count,
@@ -596,7 +596,7 @@ class Client(Methods):
 
             if diff.new_messages:
                 self.dispatcher.updates_queue.put_nowait((
-                    raw.types.UpdateNewMessage(
+                    raw.functions.UpdateNewMessage(
                         message=diff.new_messages[0],
                         pts=updates.pts,
                         pts_count=updates.pts_count
@@ -607,9 +607,9 @@ class Client(Methods):
             else:
                 if diff.other_updates:  # The other_updates list can be empty
                     self.dispatcher.updates_queue.put_nowait((diff.other_updates[0], {}, {}))
-        elif isinstance(updates, raw.types.UpdateShort):
+        elif isinstance(updates, raw.functions.UpdateShort):
             self.dispatcher.updates_queue.put_nowait((updates.update, {}, {}))
-        elif isinstance(updates, raw.types.UpdatesTooLong):
+        elif isinstance(updates, raw.functions.UpdatesTooLong):
             log.info(updates)
 
     async def load_session(self):
@@ -820,35 +820,35 @@ class Client(Methods):
 
             if file_type == FileType.CHAT_PHOTO:
                 if file_id.chat_id > 0:
-                    peer = raw.types.InputPeerUser(
+                    peer = raw.functions.InputPeerUser(
                         user_id=file_id.chat_id,
                         access_hash=file_id.chat_access_hash
                     )
                 else:
                     if file_id.chat_access_hash == 0:
-                        peer = raw.types.InputPeerChat(
+                        peer = raw.functions.InputPeerChat(
                             chat_id=-file_id.chat_id
                         )
                     else:
-                        peer = raw.types.InputPeerChannel(
+                        peer = raw.functions.InputPeerChannel(
                             channel_id=utils.get_channel_id(file_id.chat_id),
                             access_hash=file_id.chat_access_hash
                         )
 
-                location = raw.types.InputPeerPhotoFileLocation(
+                location = raw.functions.InputPeerPhotoFileLocation(
                     peer=peer,
                     photo_id=file_id.media_id,
                     big=file_id.thumbnail_source == ThumbnailSource.CHAT_PHOTO_BIG
                 )
             elif file_type == FileType.PHOTO:
-                location = raw.types.InputPhotoFileLocation(
+                location = raw.functions.InputPhotoFileLocation(
                     id=file_id.media_id,
                     access_hash=file_id.access_hash,
                     file_reference=file_id.file_reference,
                     thumb_size=file_id.thumbnail_size
                 )
             else:
-                location = raw.types.InputDocumentFileLocation(
+                location = raw.functions.InputDocumentFileLocation(
                     id=file_id.media_id,
                     access_hash=file_id.access_hash,
                     file_reference=file_id.file_reference,
@@ -897,7 +897,7 @@ class Client(Methods):
                     sleep_threshold=30
                 )
 
-                if isinstance(r, raw.types.upload.File):
+                if isinstance(r, raw.functions.upload.File):
                     while True:
                         chunk = r.bytes
 
@@ -933,7 +933,7 @@ class Client(Methods):
                             sleep_threshold=30
                         )
 
-                elif isinstance(r, raw.types.upload.FileCdnRedirect):
+                elif isinstance(r, raw.functions.upload.FileCdnRedirect):
                     cdn_session = Session(
                         self, r.dc_id, await Auth(self, r.dc_id, await self.storage.test_mode()).create(),
                         await self.storage.test_mode(), is_media=True, is_cdn=True
@@ -951,7 +951,7 @@ class Client(Methods):
                                 )
                             )
 
-                            if isinstance(r2, raw.types.upload.CdnFileReuploadNeeded):
+                            if isinstance(r2, raw.functions.upload.CdnFileReuploadNeeded):
                                 try:
                                     await session.invoke(
                                         raw.functions.upload.ReuploadCdnFile(

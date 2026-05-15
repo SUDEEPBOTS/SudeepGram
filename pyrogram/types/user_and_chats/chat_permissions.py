@@ -80,7 +80,7 @@ class ChatPermissions(Object):
 
     @staticmethod
     def _parse(denied_permissions: "raw.base.ChatBannedRights") -> "ChatPermissions":
-        if isinstance(denied_permissions, raw.types.ChatBannedRights):
+        if isinstance(denied_permissions, raw.functions.ChatBannedRights):
             return ChatPermissions(
                 can_send_messages=not denied_permissions.send_messages,
                 can_send_media_messages=not denied_permissions.send_media,

@@ -74,14 +74,14 @@ class PromoteChatMember:
             raw_chat_member = None
 
         rank = None
-        if isinstance(raw_chat_member, raw.types.ChannelParticipantAdmin):
+        if isinstance(raw_chat_member, raw.functions.ChannelParticipantAdmin):
             rank = raw_chat_member.rank
 
         await self.invoke(
             raw.functions.channels.EditAdmin(
                 channel=chat_id,
                 user_id=user_id,
-                admin_rights=raw.types.ChatAdminRights(
+                admin_rights=raw.functions.ChatAdminRights(
                     anonymous=privileges.is_anonymous,
                     change_info=privileges.can_change_info,
                     post_messages=privileges.can_post_messages,

@@ -180,24 +180,24 @@ class SendAnimation:
                 if os.path.isfile(animation):
                     thumb = await self.save_file(thumb)
                     file = await self.save_file(animation, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(animation) or "video/mp4",
                         file=file,
                         thumb=thumb,
                         spoiler=has_spoiler,
                         attributes=[
-                            raw.types.DocumentAttributeVideo(
+                            raw.functions.DocumentAttributeVideo(
                                 supports_streaming=True,
                                 duration=duration,
                                 w=width,
                                 h=height
                             ),
-                            raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(animation)),
-                            raw.types.DocumentAttributeAnimated()
+                            raw.functions.DocumentAttributeFilename(file_name=file_name or os.path.basename(animation)),
+                            raw.functions.DocumentAttributeAnimated()
                         ]
                     )
                 elif re.match("^https?://", animation):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=animation,
                         spoiler=has_spoiler
                     )
@@ -206,20 +206,20 @@ class SendAnimation:
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(animation, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or animation.name) or "video/mp4",
                     file=file,
                     thumb=thumb,
                     spoiler=has_spoiler,
                     attributes=[
-                        raw.types.DocumentAttributeVideo(
+                        raw.functions.DocumentAttributeVideo(
                             supports_streaming=True,
                             duration=duration,
                             w=width,
                             h=height
                         ),
-                        raw.types.DocumentAttributeFilename(file_name=file_name or animation.name),
-                        raw.types.DocumentAttributeAnimated()
+                        raw.functions.DocumentAttributeFilename(file_name=file_name or animation.name),
+                        raw.functions.DocumentAttributeAnimated()
                     ]
                 )
 
@@ -242,14 +242,14 @@ class SendAnimation:
                     await self.save_file(animation, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             message = await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
 
                             if unsave:

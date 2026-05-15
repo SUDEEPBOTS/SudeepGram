@@ -145,18 +145,18 @@ class Sticker(Object):
     @staticmethod
     async def _parse(
         client,
-        sticker: "raw.types.Document",
+        sticker: "raw.functions.Document",
         document_attributes: Dict[Type["raw.base.DocumentAttribute"], "raw.base.DocumentAttribute"],
     ) -> "Sticker":
         sticker_attributes = (
-            document_attributes[raw.types.DocumentAttributeSticker]
-            if raw.types.DocumentAttributeSticker in document_attributes
-            else document_attributes[raw.types.DocumentAttributeCustomEmoji]
+            document_attributes[raw.functions.DocumentAttributeSticker]
+            if raw.functions.DocumentAttributeSticker in document_attributes
+            else document_attributes[raw.functions.DocumentAttributeCustomEmoji]
         )
 
-        image_size_attributes = document_attributes.get(raw.types.DocumentAttributeImageSize, None)
-        file_name = getattr(document_attributes.get(raw.types.DocumentAttributeFilename, None), "file_name", None)
-        video_attributes = document_attributes.get(raw.types.DocumentAttributeVideo, None)
+        image_size_attributes = document_attributes.get(raw.functions.DocumentAttributeImageSize, None)
+        file_name = getattr(document_attributes.get(raw.functions.DocumentAttributeFilename, None), "file_name", None)
+        video_attributes = document_attributes.get(raw.functions.DocumentAttributeVideo, None)
 
         sticker_set = sticker_attributes.stickerset
 

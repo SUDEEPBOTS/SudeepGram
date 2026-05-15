@@ -140,12 +140,12 @@ class SendPoll:
         r = await self.invoke(
             raw.functions.messages.SendMedia(
                 peer=await self.resolve_peer(chat_id),
-                media=raw.types.InputMediaPoll(
-                    poll=raw.types.Poll(
+                media=raw.functions.InputMediaPoll(
+                    poll=raw.functions.Poll(
                         id=self.rnd_id(),
                         question=question,
                         answers=[
-                            raw.types.PollAnswer(text=text, option=bytes([i]))
+                            raw.functions.PollAnswer(text=text, option=bytes([i]))
                             for i, text in enumerate(options)
                         ],
                         closed=is_closed,
@@ -170,12 +170,12 @@ class SendPoll:
         )
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateNewMessage,
-                              raw.types.UpdateNewChannelMessage,
-                              raw.types.UpdateNewScheduledMessage)):
+            if isinstance(i, (raw.functions.UpdateNewMessage,
+                              raw.functions.UpdateNewChannelMessage,
+                              raw.functions.UpdateNewScheduledMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                 )

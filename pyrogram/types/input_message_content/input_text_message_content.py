@@ -60,7 +60,7 @@ class InputTextMessageContent(InputMessageContent):
             client, self.message_text, self.parse_mode, self.entities
         )).values()
 
-        return raw.types.InputBotInlineMessageText(
+        return raw.functions.InputBotInlineMessageText(
             no_webpage=self.disable_web_page_preview or None,
             reply_markup=await reply_markup.write(client) if reply_markup else None,
             message=message,

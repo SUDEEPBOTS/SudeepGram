@@ -174,21 +174,21 @@ class SendAudio:
                 if os.path.isfile(audio):
                     thumb = await self.save_file(thumb)
                     file = await self.save_file(audio, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(audio) or "audio/mpeg",
                         file=file,
                         thumb=thumb,
                         attributes=[
-                            raw.types.DocumentAttributeAudio(
+                            raw.functions.DocumentAttributeAudio(
                                 duration=duration,
                                 performer=performer,
                                 title=title
                             ),
-                            raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(audio))
+                            raw.functions.DocumentAttributeFilename(file_name=file_name or os.path.basename(audio))
                         ]
                     )
                 elif re.match("^https?://", audio):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=audio
                     )
                 else:
@@ -196,17 +196,17 @@ class SendAudio:
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(audio, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or audio.name) or "audio/mpeg",
                     file=file,
                     thumb=thumb,
                     attributes=[
-                        raw.types.DocumentAttributeAudio(
+                        raw.functions.DocumentAttributeAudio(
                             duration=duration,
                             performer=performer,
                             title=title
                         ),
-                        raw.types.DocumentAttributeFilename(file_name=file_name or audio.name)
+                        raw.functions.DocumentAttributeFilename(file_name=file_name or audio.name)
                     ]
                 )
 
@@ -229,14 +229,14 @@ class SendAudio:
                     await self.save_file(audio, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except StopTransmission:
             return None

@@ -201,14 +201,14 @@ class SaveFile:
                 log.exception(e)
             else:
                 if is_big:
-                    return raw.types.InputFileBig(
+                    return raw.functions.InputFileBig(
                         id=file_id,
                         parts=file_total_parts,
                         name=file_name,
 
                     )
                 else:
-                    return raw.types.InputFile(
+                    return raw.functions.InputFile(
                         id=file_id,
                         parts=file_total_parts,
                         name=file_name,

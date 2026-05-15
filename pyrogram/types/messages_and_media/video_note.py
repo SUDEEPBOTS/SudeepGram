@@ -83,8 +83,8 @@ class VideoNote(Object):
     @staticmethod
     def _parse(
         client,
-        video_note: "raw.types.Document",
-        video_attributes: "raw.types.DocumentAttributeVideo"
+        video_note: "raw.functions.Document",
+        video_attributes: "raw.functions.DocumentAttributeVideo"
     ) -> "VideoNote":
         return VideoNote(
             file_id=FileId(

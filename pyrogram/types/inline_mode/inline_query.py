@@ -77,7 +77,7 @@ class InlineQuery(Object, Update):
         self.matches = matches
 
     @staticmethod
-    def _parse(client, inline_query: raw.types.UpdateBotInlineQuery, users: dict) -> "InlineQuery":
+    def _parse(client, inline_query: raw.functions.UpdateBotInlineQuery, users: dict) -> "InlineQuery":
         peer_type = inline_query.peer_type
         chat_type = None
 
@@ -85,11 +85,11 @@ class InlineQuery(Object, Update):
             chat_type = enums.ChatType.BOT
         elif isinstance(peer_type, raw.types.InlineQueryPeerTypePM):
             chat_type = enums.ChatType.PRIVATE
-        elif isinstance(peer_type, raw.types.InlineQueryPeerTypeChat):
+        elif isinstance(peer_type, raw.functions.InlineQueryPeerTypeChat):
             chat_type = enums.ChatType.GROUP
-        elif isinstance(peer_type, raw.types.InlineQueryPeerTypeMegagroup):
+        elif isinstance(peer_type, raw.functions.InlineQueryPeerTypeMegagroup):
             chat_type = enums.ChatType.SUPERGROUP
-        elif isinstance(peer_type, raw.types.InlineQueryPeerTypeBroadcast):
+        elif isinstance(peer_type, raw.functions.InlineQueryPeerTypeBroadcast):
             chat_type = enums.ChatType.CHANNEL
 
         return InlineQuery(

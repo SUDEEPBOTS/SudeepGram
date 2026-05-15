@@ -185,24 +185,24 @@ class SendVideo:
                 if os.path.isfile(video):
                     thumb = await self.save_file(thumb)
                     file = await self.save_file(video, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedDocument(
+                    media = raw.functions.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(video) or "video/mp4",
                         file=file,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                         thumb=thumb,
                         attributes=[
-                            raw.types.DocumentAttributeVideo(
+                            raw.functions.DocumentAttributeVideo(
                                 supports_streaming=supports_streaming or None,
                                 duration=duration,
                                 w=width,
                                 h=height
                             ),
-                            raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(video))
+                            raw.functions.DocumentAttributeFilename(file_name=file_name or os.path.basename(video))
                         ]
                     )
                 elif re.match("^https?://", video):
-                    media = raw.types.InputMediaDocumentExternal(
+                    media = raw.functions.InputMediaDocumentExternal(
                         url=video,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler
@@ -212,20 +212,20 @@ class SendVideo:
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(video, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedDocument(
+                media = raw.functions.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or video.name) or "video/mp4",
                     file=file,
                     ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler,
                     thumb=thumb,
                     attributes=[
-                        raw.types.DocumentAttributeVideo(
+                        raw.functions.DocumentAttributeVideo(
                             supports_streaming=supports_streaming or None,
                             duration=duration,
                             w=width,
                             h=height
                         ),
-                        raw.types.DocumentAttributeFilename(file_name=file_name or video.name)
+                        raw.functions.DocumentAttributeFilename(file_name=file_name or video.name)
                     ]
                 )
 
@@ -248,14 +248,14 @@ class SendVideo:
                     await self.save_file(video, file_id=file.id, file_part=e.value)
                 else:
                     for i in r.updates:
-                        if isinstance(i, (raw.types.UpdateNewMessage,
-                                          raw.types.UpdateNewChannelMessage,
-                                          raw.types.UpdateNewScheduledMessage)):
+                        if isinstance(i, (raw.functions.UpdateNewMessage,
+                                          raw.functions.UpdateNewChannelMessage,
+                                          raw.functions.UpdateNewScheduledMessage)):
                             return await types.Message._parse(
                                 self, i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                                is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
                             )
         except StopTransmission:
             return None
