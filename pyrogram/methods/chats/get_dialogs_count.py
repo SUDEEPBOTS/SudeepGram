@@ -51,7 +51,7 @@ class GetDialogsCount:
                 raw.functions.messages.GetDialogs(
                     offset_date=0,
                     offset_id=0,
-                    offset_peer=raw.functions.InputPeerEmpty(),
+                    offset_peer=raw.types.InputPeerEmpty(),
                     limit=1,
                     hash=0
                 )

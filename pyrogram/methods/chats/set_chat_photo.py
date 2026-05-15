@@ -101,14 +101,14 @@ class SetChatPhoto:
                 video_start_ts=video_start_ts,
             )
 
-        if isinstance(peer, raw.functions.InputPeerChat):
+        if isinstance(peer, raw.types.InputPeerChat):
             await self.invoke(
                 raw.functions.messages.EditChatPhoto(
                     chat_id=peer.chat_id,
                     photo=photo,
                 )
             )
-        elif isinstance(peer, raw.functions.InputPeerChannel):
+        elif isinstance(peer, raw.types.InputPeerChannel):
             await self.invoke(
                 raw.functions.channels.EditPhoto(
                     channel=peer,

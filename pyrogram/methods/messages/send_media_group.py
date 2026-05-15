@@ -406,10 +406,10 @@ class SendMediaGroup:
             self,
             raw.functions.messages.Messages(
                 messages=[m.message for m in filter(
-                    lambda u: isinstance(u, (raw.functions.UpdateNewMessage,
-                                             raw.functions.UpdateNewChannelMessage,
-                                             raw.functions.UpdateNewScheduledMessage)),
-                    r.updates
+                    lambda u: isinstance(u, (raw.types.UpdateNewMessage,
+                                             raw.types.UpdateNewChannelMessage,
+                                             raw.types.UpdateNewScheduledMessage)),
+                    getattr(r, "updates", [])
                 )],
                 users=r.users,
                 chats=r.chats

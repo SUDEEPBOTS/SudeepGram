@@ -52,13 +52,13 @@ class LeaveChat:
         """
         peer = await self.resolve_peer(chat_id)
 
-        if isinstance(peer, raw.functions.InputPeerChannel):
+        if isinstance(peer, raw.types.InputPeerChannel):
             return await self.invoke(
                 raw.functions.channels.LeaveChannel(
                     channel=await self.resolve_peer(chat_id)
                 )
             )
-        elif isinstance(peer, raw.functions.InputPeerChat):
+        elif isinstance(peer, raw.types.InputPeerChat):
             r = await self.invoke(
                 raw.functions.messages.DeleteChatUser(
                     chat_id=peer.chat_id,

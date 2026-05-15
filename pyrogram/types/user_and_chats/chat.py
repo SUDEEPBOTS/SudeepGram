@@ -291,19 +291,19 @@ class Chat(Object):
         peer_id = utils.get_raw_peer_id(message.peer_id)
         chat_id = (peer_id or from_id) if is_chat else (from_id or peer_id)
 
-        if isinstance(message.peer_id, raw.functions.PeerUser):
+        if (message.peer_id.__class__.__name__ == 'PeerUser'):
             return Chat._parse_user_chat(client, users[chat_id])
 
-        if isinstance(message.peer_id, raw.functions.PeerChat):
+        if (message.peer_id.__class__.__name__ == 'PeerChat'):
             return Chat._parse_chat_chat(client, chats[chat_id])
 
         return Chat._parse_channel_chat(client, chats[chat_id])
 
     @staticmethod
     def _parse_dialog(client, peer, users: dict, chats: dict):
-        if isinstance(peer, raw.functions.PeerUser):
+        if (peer.__class__.__name__ == 'PeerUser'):
             return Chat._parse_user_chat(client, users[peer.user_id])
-        elif isinstance(peer, raw.functions.PeerChat):
+        elif (peer.__class__.__name__ == 'PeerChat'):
             return Chat._parse_chat_chat(client, chats[peer.chat_id])
         else:
             return Chat._parse_channel_chat(client, chats[peer.channel_id])
@@ -350,7 +350,7 @@ class Chat(Object):
                 default_send_as = full_chat.default_send_as
 
                 if default_send_as:
-                    if isinstance(default_send_as, raw.functions.PeerUser):
+                    if (default_send_as.__class__.__name__ == 'PeerUser'):
                         send_as_raw = users[default_send_as.user_id]
                     else:
                         send_as_raw = chats[default_send_as.channel_id]

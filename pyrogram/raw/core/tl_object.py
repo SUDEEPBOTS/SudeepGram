@@ -30,7 +30,12 @@ class TLObject:
 
     @classmethod
     def read(cls, b: BytesIO, *args: Any) -> Any:
-        return cast(TLObject, objects[int.from_bytes(b.read(4), "little")]).read(b, *args)
+        constructor_id = int.from_bytes(b.read(4), "little")
+        if constructor_id not in objects:
+            import logging
+            logging.getLogger("pyrogram").warning(f"UNKNOWN CONSTRUCTOR SKIPPED: {hex(constructor_id)}")
+            return None
+        return cast(TLObject, objects[constructor_id]).read(b, *args)
 
     def write(self, *args: Any) -> bytes:
         pass

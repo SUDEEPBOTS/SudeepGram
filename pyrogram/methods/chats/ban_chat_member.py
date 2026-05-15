@@ -74,12 +74,12 @@ class BanChatMember:
         chat_peer = await self.resolve_peer(chat_id)
         user_peer = await self.resolve_peer(user_id)
 
-        if isinstance(chat_peer, raw.functions.InputPeerChannel):
+        if isinstance(chat_peer, raw.types.InputPeerChannel):
             r = await self.invoke(
                 raw.functions.channels.EditBanned(
                     channel=chat_peer,
                     participant=user_peer,
-                    banned_rights=raw.functions.ChatBannedRights(
+                    banned_rights=raw.types.ChatBannedRights(
                         until_date=utils.datetime_to_timestamp(until_date),
                         view_messages=True,
                         send_messages=True,
@@ -100,8 +100,8 @@ class BanChatMember:
                 )
             )
 
-        for i in r.updates:
-            if isinstance(i, (raw.functions.UpdateNewMessage, raw.functions.UpdateNewChannelMessage)):
+        for i in getattr(r, "updates", []):
+            if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateNewChannelMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},

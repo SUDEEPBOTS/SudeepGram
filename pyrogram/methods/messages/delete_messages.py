@@ -66,7 +66,7 @@ class DeleteMessages:
         peer = await self.resolve_peer(chat_id)
         message_ids = list(message_ids) if not isinstance(message_ids, int) else [message_ids]
 
-        if isinstance(peer, raw.functions.InputPeerChannel):
+        if isinstance(peer, raw.types.InputPeerChannel):
             r = await self.invoke(
                 raw.functions.channels.DeleteMessages(
                     channel=peer,

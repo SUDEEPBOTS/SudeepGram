@@ -107,7 +107,7 @@ class GetMessages:
         if replies < 0:
             replies = (1 << 31) - 1
 
-        if isinstance(peer, raw.functions.InputPeerChannel):
+        if isinstance(peer, raw.types.InputPeerChannel):
             rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
         else:
             rpc = raw.functions.channels.GetMessages(id=ids)

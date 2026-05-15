@@ -125,13 +125,13 @@ class SendVenue:
             )
         )
 
-        for i in r.updates:
-            if isinstance(i, (raw.functions.UpdateNewMessage,
-                              raw.functions.UpdateNewChannelMessage,
-                              raw.functions.UpdateNewScheduledMessage)):
+        for i in getattr(r, "updates", []):
+            if isinstance(i, (raw.types.UpdateNewMessage,
+                              raw.types.UpdateNewChannelMessage,
+                              raw.types.UpdateNewScheduledMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
                 )

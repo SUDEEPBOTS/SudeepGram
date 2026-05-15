@@ -156,7 +156,7 @@ def parse_deleted_messages(client, update) -> List["types.Message"]:
 
 
 def pack_inline_message_id(msg_id: "raw.base.InputBotInlineMessageID"):
-    if isinstance(msg_id, raw.types.InputBotInlineMessageID):
+    if (msg_id.__class__.__name__ == 'InputBotInlineMessageID'):
         inline_message_id_packed = struct.pack(
             "<iqq",
             msg_id.dc_id,
@@ -207,13 +207,13 @@ MAX_USER_ID = 999999999999
 
 def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
     """Get the raw peer id from a Peer object"""
-    if isinstance(peer, raw.functions.PeerUser):
+    if (peer.__class__.__name__ == 'PeerUser'):
         return peer.user_id
 
-    if isinstance(peer, raw.functions.PeerChat):
+    if (peer.__class__.__name__ == 'PeerChat'):
         return peer.chat_id
 
-    if isinstance(peer, raw.functions.PeerChannel):
+    if (peer.__class__.__name__ == 'PeerChannel'):
         return peer.channel_id
 
     return None
@@ -221,13 +221,13 @@ def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
 
 def get_peer_id(peer: raw.base.Peer) -> int:
     """Get the non-raw peer id from a Peer object"""
-    if isinstance(peer, raw.functions.PeerUser):
+    if (peer.__class__.__name__ == 'PeerUser'):
         return peer.user_id
 
-    if isinstance(peer, raw.functions.PeerChat):
+    if (peer.__class__.__name__ == 'PeerChat'):
         return -peer.chat_id
 
-    if isinstance(peer, raw.functions.PeerChannel):
+    if (peer.__class__.__name__ == 'PeerChannel'):
         return MAX_CHANNEL_ID - peer.channel_id
 
     raise ValueError(f"Peer type invalid: {peer}")

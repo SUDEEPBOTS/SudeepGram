@@ -63,7 +63,7 @@ class ResolvePeer:
         except KeyError:
             if isinstance(peer_id, str):
                 if peer_id in ("self", "me"):
-                    return raw.functions.InputPeerSelf()
+                    return raw.types.InputPeerSelf()
 
                 peer_id = re.sub(r"[@+\s]", "", peer_id.lower())
 
@@ -93,7 +93,7 @@ class ResolvePeer:
                     await self.invoke(
                         raw.functions.users.GetUsers(
                             id=[
-                                raw.functions.InputUser(
+                                raw.types.InputUser(
                                     user_id=peer_id,
                                     access_hash=0
                                 )
@@ -111,7 +111,7 @@ class ResolvePeer:
                 await self.invoke(
                     raw.functions.channels.GetChannels(
                         id=[
-                            raw.functions.InputChannel(
+                            raw.types.InputChannel(
                                 channel_id=utils.get_channel_id(peer_id),
                                 access_hash=0
                             )

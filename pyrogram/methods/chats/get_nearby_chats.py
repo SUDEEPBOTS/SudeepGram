@@ -60,11 +60,11 @@ class GetNearbyChats:
             )
         )
 
-        if not r.updates:
+        if not getattr(r, "updates", []):
             return []
 
         chats = types.List([types.Chat._parse_chat(self, chat) for chat in r.chats])
-        peers = r.updates[0].peers
+        peers = getattr(r, "updates", [None])[0].peers
 
         for peer in peers:
             if isinstance(peer.peer, raw.functions.PeerChannel):

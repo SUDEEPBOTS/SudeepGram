@@ -535,7 +535,7 @@ class Client(Methods):
     async def handle_updates(self, updates):
         self.last_update_time = datetime.now()
 
-        if isinstance(updates, (raw.types.Updates, raw.functions.UpdatesCombined)):
+        if ('Update' in updates.__class__.__name__):
             is_min = any((
                 await self.fetch_peers(updates.users),
                 await self.fetch_peers(updates.chats),

@@ -53,7 +53,7 @@ class GetChatPhotos:
         """
         peer_id = await self.resolve_peer(chat_id)
 
-        if isinstance(peer_id, raw.functions.InputPeerChannel):
+        if isinstance(peer_id, raw.types.InputPeerChannel):
             r = await self.invoke(
                 raw.functions.channels.GetFullChannel(
                     channel=peer_id

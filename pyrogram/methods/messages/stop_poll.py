@@ -74,4 +74,5 @@ class StopPoll:
             )
         )
 
-        return types.Poll._parse(self, r.updates[0])
+        updates = getattr(r, "updates", [])
+        return types.Poll._parse(self, updates[0]) if updates else None

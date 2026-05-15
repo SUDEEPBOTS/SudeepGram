@@ -75,7 +75,7 @@ class GetInlineBotResults:
             return await self.invoke(
                 raw.functions.messages.GetInlineBotResults(
                     bot=await self.resolve_peer(bot),
-                    peer=raw.functions.InputPeerSelf(),
+                    peer=raw.types.InputPeerSelf(),
                     query=query,
                     offset=offset,
                     geo_point=raw.functions.InputGeoPoint(

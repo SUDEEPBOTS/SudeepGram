@@ -81,7 +81,7 @@ class PromoteChatMember:
             raw.functions.channels.EditAdmin(
                 channel=chat_id,
                 user_id=user_id,
-                admin_rights=raw.functions.ChatAdminRights(
+                admin_rights=raw.types.ChatAdminRights(
                     anonymous=privileges.is_anonymous,
                     change_info=privileges.can_change_info,
                     post_messages=privileges.can_post_messages,

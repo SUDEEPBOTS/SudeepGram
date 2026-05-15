@@ -195,11 +195,33 @@ class Session:
 
         messages = (
             data.body.messages
-            if isinstance(data.body, MsgContainer)
+            if data.body.__class__.__name__ == 'MsgContainer'
             else [data]
         )
 
         log.debug("Received: %s", data)
+        # 🚀 DREX UPDATE CATCHER 🚀
+        _msgs = data.body.messages if hasattr(data.body, 'messages') else [data]
+        for _m in _msgs:
+            if _m.body is not None and 'Update' in _m.body.__class__.__name__:
+                log.warning(f"📩 NEW UPDATE RECEIVED: {_m.body.__class__.__name__}")
+                if hasattr(self, 'dispatcher') and self.dispatcher:
+                    self.dispatcher.updates_queue.put_nowait(_m.body)
+
+        # 🚀 DREX PERFECT OVERRIDE 🚀
+        if hasattr(data.body, 'messages'):
+            messages = data.body.messages
+        for drex_msg in messages:
+            if drex_msg.body is None: continue
+            if hasattr(drex_msg.body, 'req_msg_id'):
+                req = drex_msg.body.req_msg_id
+                if req in self.results:
+                    log.warning(f"✅ RESOLVED MAGIC FUTURE {req}! BOT LOGGED IN! 🚀")
+                    q = self.results[req]
+                    q.value = getattr(drex_msg.body, 'result', None)
+                    if hasattr(q, 'event') and hasattr(q.event, 'set'): q.event.set()
+                    elif hasattr(q, 'set_result'): q.set_result(q.value)
+                    elif hasattr(q, 'set'): q.set()
 
         for msg in messages:
             if msg.seq_no % 2 != 0:
@@ -235,20 +257,32 @@ class Session:
             else:
                 bisect.insort(self.stored_msg_ids, msg.msg_id)
 
-            if isinstance(msg.body, (raw.types.MsgDetailedInfo, raw.types.MsgNewDetailedInfo)):
+            if msg.body is None:
+                continue
+            if msg.body.__class__.__name__ in ('MsgDetailedInfo', 'MsgNewDetailedInfo'):
                 self.pending_acks.add(msg.body.answer_msg_id)
                 continue
 
-            if isinstance(msg.body, raw.types.NewSessionCreated):
+            if msg.body.__class__.__name__ == 'NewSessionCreated':
                 continue
 
             msg_id = None
 
-            if isinstance(msg.body, (raw.types.BadMsgNotification, raw.types.BadServerSalt)):
+            body_name = msg.body.__class__.__name__
+            if body_name == 'BadServerSalt' or hasattr(msg.body, 'new_server_salt'):
+                self.salt = getattr(msg.body, 'new_server_salt', self.salt)
+                log.warning(f"🚀 MEGA PATCH: SALT CAUGHT AND UPDATED TO: {self.salt} 🚀")
+                
+            if body_name in ('BadMsgNotification', 'BadServerSalt'):
                 msg_id = msg.body.bad_msg_id
+                if hasattr(msg.body, 'new_server_salt'):
+                    self.salt = msg.body.new_server_salt
+                    log.warning(f"🚀 SALT FORCE UPDATED TO: {self.salt}")
+                if hasattr(msg.body, 'new_server_salt'):
+                    self.salt = msg.body.new_server_salt
             elif isinstance(msg.body, (FutureSalts, raw.types.RpcResult)):
                 msg_id = msg.body.req_msg_id
-            elif isinstance(msg.body, raw.types.Pong):
+            elif msg.body.__class__.__name__ == 'Pong':
                 msg_id = msg.body.msg_id
             else:
                 if self.client is not None:
@@ -350,16 +384,16 @@ class Session:
             if result is None:
                 raise TimeoutError("Request timed out")
 
-            if isinstance(result, raw.types.RpcError):
+            if result.__class__.__name__ == 'RpcError':
                 if isinstance(data, (raw.functions.InvokeWithoutUpdates, raw.functions.InvokeWithTakeout)):
                     data = data.query
 
                 RPCError.raise_it(result, type(data))
 
-            if isinstance(result, raw.types.BadMsgNotification):
+            if result.__class__.__name__ == 'BadMsgNotification':
                 log.warning("%s: %s", BadMsgNotification.__name__, BadMsgNotification(result.error_code))
 
-            if isinstance(result, raw.types.BadServerSalt):
+            if result.__class__.__name__ == 'BadServerSalt':
                 self.salt = result.new_server_salt
                 return await self.send(data, wait_response, timeout)
 

@@ -53,7 +53,7 @@ class SetChatDescription:
         """
         peer = await self.resolve_peer(chat_id)
 
-        if isinstance(peer, (raw.functions.InputPeerChannel, raw.functions.InputPeerChat)):
+        if isinstance(peer, (raw.types.InputPeerChannel, raw.types.InputPeerChat)):
             await self.invoke(
                 raw.functions.messages.EditChatAbout(
                     peer=peer,

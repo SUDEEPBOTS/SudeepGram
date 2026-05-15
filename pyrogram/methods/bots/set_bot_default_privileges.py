@@ -64,7 +64,7 @@ class SetBotDefaultPrivileges:
             else raw.functions.bots.SetBotGroupDefaultAdminRights
         )
 
-        admin_rights = raw.functions.ChatAdminRights(
+        admin_rights = raw.types.ChatAdminRights(
             change_info=privileges.can_change_info,
             post_messages=privileges.can_post_messages,
             edit_messages=privileges.can_edit_messages,
@@ -76,6 +76,6 @@ class SetBotDefaultPrivileges:
             anonymous=privileges.is_anonymous,
             manage_call=privileges.can_manage_video_chats,
             other=privileges.can_manage_chat
-        ) if privileges else raw.functions.ChatAdminRights()
+        ) if privileges else raw.types.ChatAdminRights()
 
         return await self.invoke(function(admin_rights=admin_rights))

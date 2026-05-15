@@ -278,8 +278,8 @@ class EditMessageMedia:
             )
         )
 
-        for i in r.updates:
-            if isinstance(i, (raw.functions.UpdateEditMessage, raw.functions.UpdateEditChannelMessage)):
+        for i in getattr(r, "updates", []):
+            if isinstance(i, (raw.types.UpdateEditMessage, raw.types.UpdateEditChannelMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},

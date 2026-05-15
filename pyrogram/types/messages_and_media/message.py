@@ -476,7 +476,7 @@ class Message(Object, Update):
         peer_id = utils.get_raw_peer_id(message.peer_id)
         user_id = from_id or peer_id
 
-        if isinstance(message.from_id, raw.functions.PeerUser) and isinstance(message.peer_id, raw.functions.PeerUser):
+        if (message.from_id.__class__.__name__ == 'PeerUser') and (message.peer_id.__class__.__name__ == 'PeerUser'):
             if from_id not in users or peer_id not in users:
                 try:
                     r = await client.invoke(

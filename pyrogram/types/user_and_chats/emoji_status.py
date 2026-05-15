@@ -56,7 +56,8 @@ class EmojiStatus(Object):
                 custom_emoji_id=emoji_status.document_id
             )
 
-        if isinstance(emoji_status, raw.types.EmojiStatusUntil):
+        EmojiStatusUntil = getattr(raw.types, 'EmojiStatusUntil', None)
+        if EmojiStatusUntil and isinstance(emoji_status, EmojiStatusUntil):
             return EmojiStatus(
                 client=client,
                 custom_emoji_id=emoji_status.document_id,

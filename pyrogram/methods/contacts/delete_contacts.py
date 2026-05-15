@@ -58,7 +58,7 @@ class DeleteContacts:
             )
         )
 
-        if not r.updates:
+        if not getattr(r, "updates", []):
             return None
 
         users = types.List([types.User._parse(self, i) for i in r.users])

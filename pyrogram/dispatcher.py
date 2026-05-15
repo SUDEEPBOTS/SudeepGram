@@ -208,7 +208,30 @@ class Dispatcher:
 
             try:
                 update, users, chats = packet
+                # 🚀 DREX PEER SAVER 🚀
+                try:
+                    _peers = []
+                    for _u in (users or {}).values():
+                        if hasattr(_u, 'id') and hasattr(_u, 'access_hash'):
+                            _peers.append((getattr(_u, 'id'), getattr(_u, 'access_hash'), 'user', getattr(_u, 'username', None) or "", getattr(_u, 'phone', None) or ""))
+                    for _c in (chats or {}).values():
+                        if hasattr(_c, 'id') and hasattr(_c, 'access_hash'):
+                            _peers.append((getattr(_c, 'id'), getattr(_c, 'access_hash'), 'channel', getattr(_c, 'username', None) or "", ""))
+                    if _peers:
+                        await self.client.storage.update_peers(_peers)
+                except Exception as e:
+                    import logging
+                    logging.getLogger("pyrogram").error(f"Peer save error: {e}")
+
                 parser = self.update_parsers.get(type(update), None)
+                if parser is None:
+                    for k, v in self.update_parsers.items():
+                        if hasattr(k, '__name__') and k.__name__ == update.__class__.__name__:
+                            parser = v
+                            break
+                if parser is not None:
+                    import logging
+                    logging.getLogger("pyrogram").warning(f"🎯 PARSER FOUND FOR: {update.__class__.__name__}")
 
                 parsed_update, handler_type = (
                     await parser(update, users, chats)

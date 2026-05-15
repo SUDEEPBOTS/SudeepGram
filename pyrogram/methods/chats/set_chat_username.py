@@ -55,7 +55,7 @@ class SetChatUsername:
 
         peer = await self.resolve_peer(chat_id)
 
-        if isinstance(peer, raw.functions.InputPeerChannel):
+        if isinstance(peer, raw.types.InputPeerChannel):
             return bool(
                 await self.invoke(
                     raw.functions.account.UpdateUsername(

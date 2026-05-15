@@ -128,7 +128,7 @@ class SendMessage:
                 peer=await self.resolve_peer(chat_id),
                 no_webpage=disable_web_page_preview or None,
                 silent=disable_notification or None,
-                reply_to_msg_id=reply_to_message_id,
+                reply_to=raw.types.InputReplyToMessage(reply_to_msg_id=reply_to_message_id) if reply_to_message_id else None,
                 random_id=self.rnd_id(),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
@@ -138,14 +138,15 @@ class SendMessage:
             )
         )
 
-        if isinstance(r, raw.functions.UpdateShortSentMessage):
+        if isinstance(r, raw.types.UpdateShortSentMessage):
             peer = await self.resolve_peer(chat_id)
 
-            peer_id = (
-                peer.user_id
-                if isinstance(peer, raw.functions.InputPeerUser)
-                else -peer.chat_id
-            )
+            if hasattr(peer, 'user_id'):
+                peer_id = peer.user_id
+            elif hasattr(peer, 'channel_id'):
+                peer_id = -1000000000000 - peer.channel_id
+            else:
+                peer_id = -peer.chat_id
 
             return types.Message(
                 id=r.id,
@@ -165,13 +166,13 @@ class SendMessage:
                 client=self
             )
 
-        for i in r.updates:
-            if isinstance(i, (raw.functions.UpdateNewMessage,
-                              raw.functions.UpdateNewChannelMessage,
-                              raw.functions.UpdateNewScheduledMessage)):
+        for i in getattr(r, "updates", []):
+            if isinstance(i, (raw.types.UpdateNewMessage,
+                              raw.types.UpdateNewChannelMessage,
+                              raw.types.UpdateNewScheduledMessage)):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.functions.UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
                 )

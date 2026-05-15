@@ -50,14 +50,14 @@ class DeleteChatPhoto:
         """
         peer = await self.resolve_peer(chat_id)
 
-        if isinstance(peer, raw.functions.InputPeerChat):
+        if isinstance(peer, raw.types.InputPeerChat):
             await self.invoke(
                 raw.functions.messages.EditChatPhoto(
                     chat_id=peer.chat_id,
                     photo=raw.functions.InputChatPhotoEmpty()
                 )
             )
-        elif isinstance(peer, raw.functions.InputPeerChannel):
+        elif isinstance(peer, raw.types.InputPeerChannel):
             await self.invoke(
                 raw.functions.channels.EditPhoto(
                     channel=peer,

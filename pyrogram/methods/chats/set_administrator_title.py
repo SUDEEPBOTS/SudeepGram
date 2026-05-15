@@ -67,7 +67,7 @@ class SetAdministratorTitle:
         )).participant
 
         if isinstance(r, raw.functions.ChannelParticipantCreator):
-            admin_rights = raw.functions.ChatAdminRights()
+            admin_rights = raw.types.ChatAdminRights()
         elif isinstance(r, raw.functions.ChannelParticipantAdmin):
             admin_rights = r.admin_rights
         else:
