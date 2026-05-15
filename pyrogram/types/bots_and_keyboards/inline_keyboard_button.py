@@ -87,7 +87,8 @@ class InlineKeyboardButton(Object):
         switch_inline_query: str = None,
         switch_inline_query_current_chat: str = None,
         callback_game: "types.CallbackGame" = None,
-        style: "enums.ButtonStyle" = None
+        style: "enums.ButtonStyle" = None,
+        emoji_icon: int = None
     ):
         super().__init__()
 
@@ -101,6 +102,7 @@ class InlineKeyboardButton(Object):
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         self.callback_game = callback_game
         self.style = style
+        self.emoji_icon = emoji_icon
         # self.pay = pay
 
     @staticmethod
@@ -163,13 +165,14 @@ class InlineKeyboardButton(Object):
             )
 
     def _get_raw_style(self):
-        if self.style is None:
+        if self.style is None and self.emoji_icon is None:
             return None
         from pyrogram import enums
         return raw.functions.KeyboardButtonStyle(
             bg_primary=self.style == enums.ButtonStyle.PRIMARY,
             bg_danger=self.style == enums.ButtonStyle.DANGER,
             bg_success=self.style == enums.ButtonStyle.SUCCESS,
+            icon=self.emoji_icon
         )
 
     async def write(self, client: "pyrogram.Client"):

@@ -162,7 +162,14 @@ class Chat(Object):
         distance: int = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
-        available_reactions: Optional["types.ChatReactions"] = None
+        available_reactions: Optional["types.ChatReactions"] = None,
+        is_forum: bool = None,
+        is_monoforum: bool = None,
+        has_forum_tabs: bool = None,
+        has_autotranslation: bool = None,
+        has_signature_profiles: bool = None,
+        level: int = None,
+        linked_monoforum_id: int = None
     ):
         super().__init__(client)
 
@@ -194,6 +201,13 @@ class Chat(Object):
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
+        self.is_forum = is_forum
+        self.is_monoforum = is_monoforum
+        self.has_forum_tabs = has_forum_tabs
+        self.has_autotranslation = has_autotranslation
+        self.has_signature_profiles = has_signature_profiles
+        self.level = level
+        self.linked_monoforum_id = linked_monoforum_id
 
     @staticmethod
     def _parse_user_chat(client, user: raw.functions.User) -> "Chat":
@@ -255,6 +269,13 @@ class Chat(Object):
             members_count=getattr(channel, "participants_count", None),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
+            is_forum=getattr(channel, "forum", None),
+            is_monoforum=getattr(channel, "monoforum", None),
+            has_forum_tabs=getattr(channel, "forum_tabs", None),
+            has_autotranslation=getattr(channel, "autotranslation", None),
+            has_signature_profiles=getattr(channel, "signature_profiles", None),
+            level=getattr(channel, "level", None),
+            linked_monoforum_id=getattr(channel, "linked_monoforum_id", None),
             client=client
         )
 

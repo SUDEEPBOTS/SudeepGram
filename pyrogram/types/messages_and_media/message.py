@@ -334,6 +334,7 @@ class Message(Object, Update):
         edit_date: datetime = None,
         media_group_id: str = None,
         author_signature: str = None,
+        sender_rank: str = None,
         has_protected_content: bool = None,
         has_media_spoiler: bool = None,
         text: Str = None,
@@ -411,6 +412,7 @@ class Message(Object, Update):
         self.edit_date = edit_date
         self.media_group_id = media_group_id
         self.author_signature = author_signature
+        self.sender_rank = sender_rank
         self.has_protected_content = has_protected_content
         self.has_media_spoiler = has_media_spoiler
         self.text = text
@@ -785,6 +787,7 @@ class Message(Object, Update):
                     else None
                 ),
                 author_signature=message.post_author,
+                sender_rank=getattr(message, "from_rank", None),
                 has_protected_content=message.noforwards,
                 has_media_spoiler=has_media_spoiler,
                 forward_from=forward_from,

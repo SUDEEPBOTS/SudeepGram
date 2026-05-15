@@ -64,6 +64,18 @@ class ChatPrivileges(Object):
 
         is_anonymous (``bool``, *optional*):
             True, if the user's presence in the chat is hidden.
+        can_manage_topics (``bool``, *optional*):
+            True, if the administrator can manage forum topics.
+        can_post_stories (``bool``, *optional*):
+            Channels only. True, if the administrator can post stories.
+        can_edit_stories (``bool``, *optional*):
+            Channels only. True, if the administrator can edit stories.
+        can_delete_stories (``bool``, *optional*):
+            Channels only. True, if the administrator can delete stories.
+        can_manage_direct_messages (``bool``, *optional*):
+            True, if the administrator can manage direct messages (monoforum).
+        can_manage_ranks (``bool``, *optional*):
+            True, if the administrator can manage custom titles/ranks of members.
     """
 
     def __init__(
@@ -79,7 +91,13 @@ class ChatPrivileges(Object):
         can_edit_messages: bool = False,  # Channels only
         can_invite_users: bool = False,
         can_pin_messages: bool = False,  # Groups and supergroups only
-        is_anonymous: bool = False
+        is_anonymous: bool = False,
+        can_manage_topics: bool = False,
+        can_post_stories: bool = False,
+        can_edit_stories: bool = False,
+        can_delete_stories: bool = False,
+        can_manage_direct_messages: bool = False,
+        can_manage_ranks: bool = False
     ):
         super().__init__(None)
 
@@ -94,6 +112,12 @@ class ChatPrivileges(Object):
         self.can_invite_users: bool = can_invite_users
         self.can_pin_messages: bool = can_pin_messages
         self.is_anonymous: bool = is_anonymous
+        self.can_manage_topics: bool = can_manage_topics
+        self.can_post_stories: bool = can_post_stories
+        self.can_edit_stories: bool = can_edit_stories
+        self.can_delete_stories: bool = can_delete_stories
+        self.can_manage_direct_messages: bool = can_manage_direct_messages
+        self.can_manage_ranks: bool = can_manage_ranks
 
     @staticmethod
     def _parse(admin_rights: "raw.base.ChatAdminRights") -> "ChatPrivileges":
@@ -108,5 +132,32 @@ class ChatPrivileges(Object):
             can_edit_messages=admin_rights.edit_messages,
             can_invite_users=admin_rights.invite_users,
             can_pin_messages=admin_rights.pin_messages,
-            is_anonymous=admin_rights.anonymous
+            is_anonymous=admin_rights.anonymous,
+            can_manage_topics=admin_rights.manage_topics,
+            can_post_stories=admin_rights.post_stories,
+            can_edit_stories=admin_rights.edit_stories,
+            can_delete_stories=admin_rights.delete_stories,
+            can_manage_direct_messages=admin_rights.manage_direct_messages,
+            can_manage_ranks=admin_rights.manage_ranks
+        )
+
+    def write(self) -> "raw.functions.ChatAdminRights":
+        return raw.functions.ChatAdminRights(
+            other=self.can_manage_chat,
+            delete_messages=self.can_delete_messages,
+            manage_call=self.can_manage_video_chats,
+            ban_users=self.can_restrict_members,
+            add_admins=self.can_promote_members,
+            change_info=self.can_change_info,
+            post_messages=self.can_post_messages,
+            edit_messages=self.can_edit_messages,
+            invite_users=self.can_invite_users,
+            pin_messages=self.can_pin_messages,
+            anonymous=self.is_anonymous,
+            manage_topics=self.can_manage_topics,
+            post_stories=self.can_post_stories,
+            edit_stories=self.can_edit_stories,
+            delete_stories=self.can_delete_stories,
+            manage_direct_messages=self.can_manage_direct_messages,
+            manage_ranks=self.can_manage_ranks
         )

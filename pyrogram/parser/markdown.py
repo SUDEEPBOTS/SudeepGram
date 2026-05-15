@@ -78,6 +78,12 @@ class Markdown:
                 continue
 
             if text_url:
+                # Custom emoji: [text](emoji:123456789)
+                if url.startswith("emoji:"):
+                    emoji_id = url[6:]
+                    text = utils.replace_once(text, full, f'<emoji id="{emoji_id}">{text_url}</emoji>', start)
+                    continue
+
                 text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
                 continue
 
@@ -148,6 +154,10 @@ class Markdown:
                 url = entity.url
                 start_tag = "["
                 end_tag = f"]({url})"
+            elif entity_type == MessageEntityType.CUSTOM_EMOJI:
+                emoji_id = entity.custom_emoji_id
+                start_tag = "["
+                end_tag = f"](emoji:{emoji_id})"
             elif entity_type == MessageEntityType.TEXT_MENTION:
                 user = entity.user
                 start_tag = "["
