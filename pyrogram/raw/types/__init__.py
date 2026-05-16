@@ -62,3 +62,4 @@ from .ip_port import IpPort
 from .ip_port_secret import IpPortSecret
 from .access_point_rule import AccessPointRule
 from . import help
+from .channel import Channel
