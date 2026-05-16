@@ -47,3 +47,45 @@ from .http_wait import HttpWait
 from .ip_port import IpPort
 from .access_point_rule import AccessPointRule
 from . import help
+# Abstract TL type stubs (Layer 225)
+class Peer: pass
+class InputPeer: pass
+class Message: pass
+class InputChannel: pass
+class InputUser: pass
+class Chat: pass
+class User: pass
+class InputMedia: pass
+class InputFile: pass
+class InputPhoto: pass
+class InputDocument: pass
+class InputGeoPoint: pass
+class InputContact: pass
+class ReplyMarkup: pass
+class Update: pass
+class Updates: pass
+class PhotoSize: pass
+class DocumentAttribute: pass
+class SendMessageAction: pass
+class MessageEntity: pass
+class KeyboardButton: pass
+class BotCommand: pass
+class ChannelParticipant: pass
+class ChatParticipant: pass
+class InputBotInlineResult: pass
+class InputBotInlineMessage: pass
+class InputCheckPasswordSRP: pass
+class InputStickerSet: pass
+class DraftMessage: pass
+class TopPeerCategory: pass
+class PrivacyRule: pass
+class InputPrivacyKey: pass
+class InputPrivacyRule: pass
+class SecureValueType: pass
+class InputSecureValue: pass
+class SecureValueError: pass
+class InputTheme: pass
+class InputWallPaper: pass
+class PageBlock: pass
+class RichText: pass
+class BotInlineResult: pass
